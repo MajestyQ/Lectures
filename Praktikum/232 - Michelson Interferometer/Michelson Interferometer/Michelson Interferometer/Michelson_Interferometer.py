@@ -6,7 +6,7 @@ from scipy.signal import argrelextrema
 from scipy import signal
 
 #Auslesen der Messdaten
-data = np.genfromtxt (r'C:\Users\Quirinus\Documents\GitHub\Praktikum\Interferenz_Daten.csv', delimiter = ",", 
+data = np.genfromtxt (r'C:\Users\Quirinus\Documents\GitHub\Praktikum\Praktikum\232 - Michelson Interferometer\Interferenz_Daten.csv', delimiter = ",", 
                      skip_header = 7300, skip_footer = 5500, usecols = (0, 1))
 x1 = data[0:, 0]
 y1 = data[0:, 1]
@@ -35,9 +35,9 @@ plt.plot(x1, y1, linewidth = 0.1, color = 'k', linestyle = '--')
 #plotten des Fits
 x = np.linspace(x1[0],x1[-1], 1000)
 plt.plot(x, gaussian(x, *popt), 'r-', linewidth = 1)
-plt.legend(['Messwerte', 'GauÃŸ-Fit'])
+plt.legend(['Messwerte', 'Gauß-Fit'])
 plt.xlabel('Zeit in s')
-plt.ylabel('IntensitÃ¤t')
+plt.ylabel('Intensität')
 plt.title('Keine Ahnung was ich getan hab')
 
 #speichern des Graphen
