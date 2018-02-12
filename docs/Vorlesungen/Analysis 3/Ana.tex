@@ -1,3 +1,4 @@
+
 \documentclass[12pt,a4paper,fleqn]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
@@ -27,6 +28,7 @@
 \def\set#1{{\left\{ #1 \right\}}}
 \def\Mid{\ \middle|\ }
 \def\R{{\mathbb{R}}}
+\def\d{{\operatorname{d}}}
 
 \begin{document}
 
@@ -768,6 +770,222 @@ wobei $\det ((D\phi)^\top(D\phi))$ mit \textit{Gram-Determinante} bezeichnet wir
  Entsprechend sind die Räume $L^p(M)$ erklärt.
 
 \paragraph{Lemma} Das Integral auf einer Mannigfaltigkeit ist wohldefiniert und hängt insbesondere nicht vom gewählten Atlas ab.
+
+\paragraph{Definition} Sei $M \subset \R^n$ eine $m$-dimensionale Mannigfaltigkeit mit endlichem Atlas. Ist $S \subset \R^n$ eine Teilmenge und ist $\chi_S$ integrierbar im Sinne vorheriger Definition, so nennen wir $S$ integrierbar und definieren den $m$-dimensionalen Flächeninhalt vom $S$ durch $\operatorname{vol}^m(S) = \int_M \chi_S\ dA^m$. Im all $\operatorname{vol}^m(S) = 0$sprechen wir von einer $m$-dimensionalen Nullmenge. Eine Funktion $f\colon S \rightarrow \R$ heißt über $A$ integrierbar, falls $f\chi_S$ im Sinne vorheriger Definition integrierbar ist. Wir setzen 
+\begin{displaymath}
+\int_S f\ dA^m = \int_M f\chi_S\ dA^m
+\end{displaymath}
+Entsprechend sind Räume $L^p(S)$ erklärt. Ist $S$ in$M$ offen, d. h. selbst eine Mannigfaltigkeit, so stimmt letztere Definition mit voriger überein.
+
+\subsection{Orientierung}
+
+\paragraph{Erinnerung} Zwei Basen eines Vektorraumes Heißen gleichorientiert, wenn die Basiswechselmatrix eine positive Determinante besitzt
+
+\paragraph{Definition} Sei $M$ eine $m$-dimensionale Mannigfaltigkeit im $\R^n,\ 1\leq m\leq n$.
+\begin{enumerate}
+\item Zwei Karten $\phi^{-1}_1\colon W_1 \rightarrow U_1, \phi^{-1}_2\colon W_2 \rightarrow U_2$ heißen \textit{gleichorientiert}, wenn für $W_1 \cap W_2 \neq \emptyset$ der Kartenwechsel 
+\begin{displaymath}
+\psi \coloneqq \phi_2^{-1} \circ \phi_1 \colon \phi_1^{-1}(W_1\cap W_2) \rightarrow \phi_2^{-1}(W_1\cap W_2)
+\end{displaymath}
+die Eigenschaft $\det D\psi > 0$ auf $\phi_1^{-1}(W_1 \cap W_2)$ besitzt. In diesem Fall nennen wir $\psi$ \textit{orientierungstreu}
+\item $M$ heißt \textit{orientierbar}, wenn es einen Atlas aus gleichorientierten Karten gibt und dieser heißt dann \textit{orientiert}.
+\end{enumerate}
+
+\paragraph{Bemerkung}
+\begin{enumerate}
+\item Sei $\mathcal{A}$ ein orientierbarer Atlas. Sind (nicht zu $\mathcal{A}$ gehörende Karten $\phi^{-1}_1\colon W_1 \rightarrow U_1, \phi^{-1}_2\colon W_2 \rightarrow U_2$ jeweils gleichorientiert zu allen Karten aus $\mathcal{A}$, so sind auch $\phi_1^{-1}, \phi_2^{-1}$ gleichorientiert und $\mathcal{A} \cup \set{\phi_1^{-1}, \phi_2^{-1}}$ ist ebenfalls ein orientierter Atlas.
+\item Eine Orientierung auf $M$ induziert ebenfalls eine Orientierung der Tangentialräume $T_p M$: Ist $M$ durch einen Atlas $\mathcal{A}$ orientiert und $\phi^{-1}\colon W \rightarrow U$ eine Karte aus $\mathcal{A}$ mit $\phi(u) = p$, so legt ${(\frac{\partial \phi}{\partial x_1}(u), \dots, \frac{\partial \phi}{\partial x_m}(u))}$ eine Orientierung des Tangentialraums fest und diese ist unabhängig von der speziellen Wahl von $\phi$. Weil zwei nicht gleichorientierte Karten an (mindestens) einem Punkt unterschiedliche Orientierungen von $T_p M$ induzieren, ist die Orientierung von $M$ eindeutig durch die induzierten Orientierungen der Tangentialräume gegeben.
+\end{enumerate}
+
+\paragraph{Satz} Eine Hyperfläche im $\R^n$, d. h. eine $(n - 1)$-dimensionale Mannigfaltigkeit im $\R^n$ ist genau dann orientierbar, wenn as auf $M$ ein stetiges Normalenfeld gibt, d. h. eine stetige Abbildung $\nu\colon M \rightarrow \mathbb{S}^{n-1}$ mit $\nu(p) \in N_p M\ \forall p \in M$.
+
+\subparagraph{Glatte Ränder}
+\paragraph{Definition} (Relativtopologie und Rand)\\
+Sei $(X, \mathcal{O})$ ein topologischer Raum, $Y \subset X$ eine nichtleere Teilmenge von $X$. Wir bezeichnen
+\begin{displaymath}
+\mathcal{O} \cap Y \coloneqq \set{U\cap Y \Mid U \in \mathcal{O}}
+\end{displaymath}
+als \textit{Relativtopologie} von $Y$ bezüglich $X$.
+Der Rand $\partial Y$ ist die Menge aller Punkte $x \in X$, für die jedes $U \in \mathcal{O}$ mit $x \in U$ Punkte aus $Y$ und $Y^\mathrm{C}$ enthält. Insbesondere ist $(Y, \mathcal{O} \cap Y)$ wieder ein topologischer Raum. 
+
+\paragraph{Definition} (Glatte Ränder und adaptierte Karten)\\
+Sei $M \in \R^n$ eine $m$-dimensionale Mannigfaltigkeit und $\Omega \subset M$. Wir sagen $\Omega$ hat einen \textit{glatten Rand}, falls es für jedes $p \in \partial\Omega$ eine Karte $\phi^{-1}\colon W \rightarrow U$ mit $p \in W$ und $\phi(U \cup \set{x_1 \leq 0}) = \Omega \cap W$ sowie $\phi U \cap \set{x_1 = 0}) = \partial \Omega \cap W$ gibt. Eine solche Karte $\phi^{-1}$ heißt $\Omega$\textit{-adaptiert}. Eine Atlas hißt $\Omega$\textit{-adaptiert}, falls sämtliche seiner Karten deren Definitionsbereich $\partial\Omega$ schneidet, $\Omega$-adaptiert sind.
+
+\paragraph{Lemma} Sei $M$ eine $m$-dimensionale Mannigfaltigkeit im $\R^n$, $\Omega \subset M$ eine Teilmenge mit glattem Rand. Dann gibt es einen $\Omega$-adaptierten Atlas. Ist $M$ orientiert und $m \geq 2$, so kann man erreichen, dass dieser Atlas orientiert ist.
+
+\paragraph{Satz} (Ränder als Mannigfaltigkeiten)\\
+Sei $M$ eine $m$-dimensionale Mannigfaltigkeit im $\R^n$, $m, n \in \mathbb{N},\ m \leq n$. Ist $\Omega \subset M$ eine Teilmenge mit glattem Rand, so ist $\partial M$ eine $(m - 1)$-dimensionale Mannigfaltigkeit im $\R^n$. Ist $M$ orientierbar, so ist auch $\partial M$ orientierbar.
+
+\section{Differentialformen und der Satz von Stokes}
+
+\subsection{Multilineare Algebra}
+
+\paragraph{Definition} ($k$-Formen)\\
+Eine (alternierende) $k$-Form auf einem $n$-dimensionalem, reellem Vektorraum ist eine (in jedem Argument) lineare Abbildung $\omega\colon V^k \rightarrow \R$, die bei der Vertauschung zweier Einträge das Vorzeichen wechselt. Der Vektorraum der $k$-Formen wird mit $\operatorname{Alt}^k V$ bezeichnet, $k \in \mathbb{N}$ und wir setzen $\operatorname{Alt}^0 V = \R$.
+
+\paragraph{Bemerkung} Für eine lineare Abbildung $\omega\colon V^k \rightarrow \R$ ist äquivalent:
+\begin{enumerate}
+\item $\omega$ wechselt beim vertauschen zweier Einträge das Vorzeichen
+\begin{displaymath}
+\omega(v_1, \dots, v_l, v_j, \dots, v_k) = -\omega(v_1, \dots, v_j, v_l, \dots, v_k)
+\end{displaymath}
+\item $\omega$ verschwindet, wenn zwei Einträge gleich sind
+\item $\omega$ verschwindet, wenn die Einträge linear abhängig sind
+\item Für eine Permutation $\pi \in \mathfrak{S}_k$ auf $\set{1, \dots, k}$ gilt
+\begin{displaymath}
+\omega(v_1, \dots, v_k) = (\operatorname{sign} \pi)\omega(v_{\pi(1)}, \dots, v_{\pi(k)})
+\end{displaymath}
+\end{enumerate}
+
+\paragraph{Definition} (Äußeres Produkt)\\
+Zu $\omega \in \operatorname{Alt}^k V$ und $\eta \in \operatorname{Alt}^l V$, $k, l \in \mathbb{N}$, definieren wir das äußere Produkt (Dachprodukt) $\omega \wedge \eta \in \operatorname{Alt}^{k + l} V$ durch
+\begin{displaymath}
+(\omega \wedge \eta)(v_1, \dots, v_{k+l}) = \frac{1}{k! l!} \sum_{\pi \in\mathfrak{S}_{k+l}} (\operatorname{sign}\pi)\omega(v_{\pi(1)}, \dots, v_{\pi(k)})\eta(v_{\pi(k+1)}, \dots, v_{\pi(k+l)})
+\end{displaymath}
+
+\paragraph{Lemma} Das äußere Produkt $\wedge\colon \operatorname{Alt}^k V \times \operatorname{Alt}^l V \rightarrow \operatorname{Alt}^{k+l} V$ ist bilinear, assoziativ und antikommutativ. Das heißt $\eta \wedge \omega = (-1)^{kl}(\omega \wedge \eta)$.
+
+\paragraph{Bemerkung} Für $\omega_j \in \operatorname{Alt}^{k_j} V,\ j = 1, \dots, n$ ist
+\begin{displaymath}
+(\omega_1\wedge \dots\wedge \omega_n)(v_1, \dots, v_n) = \sum_{\pi \in \mathfrak{S}_{k_1+\dots +k_n}} \frac{\operatorname{sign}\pi}{k_1!\dots k_n!} \prod_{j=1}^n \omega_j (v_{ \pi(k_1+\dots +k_{j-1}+1)}, \dots, v_{\pi(k_1+\dots+k_j)})
+\end{displaymath}
+Damit ist für $k_1 = \dots = k_n = 1,\ \omega_1, \dots, \omega_n \in \operatorname{Alt}^1 V = V,\ v_1, \dots, v_n \in V$
+\begin{displaymath}
+(\omega_1\wedge\dots\wedge\omega_n)(v_1, \dots, v_n) = \det ((\omega_j(v_l))_{j, l = 1, \dots, n})
+\end{displaymath}
+
+\paragraph{Satz} Für eine Basis $(\delta_1, \dots, \delta_n)$ des Dualraums $V'$ ist ${(\delta_1\wedge\dots\wedge\delta_k \mid 1\leq j_1\leq\dots\leq j_k \leq n)}$ eine Basis des $\operatorname{Alt}^k V$. 
+Ist $(e_1, \dots, e_n)$ die zu $\delta_1, \dots, \delta_n)$ duale Basis von $V$, so haben wir $\omega = \sum_{j_1\leq \dots\leq j_k} a_{j_1, \dots, j_k} \delta_{j_1}\wedge\dots\wedge\delta_{j_k}$ mit $a_{j_1, \dots, j_k} = \omega(e_{j_1}, \dots, e_{j_k})\in \R$. 
+Mithin ist $\dim\operatorname{Alt}^k V = \binom{n}{k}$, insbesondere $\operatorname{Alt}^k V = 0$ für $k > n$.
+
+\paragraph{Definition} Für lineare Abbildungen $f\colon V \rightarrow W$ zwischen endlich-dimensionalen Vektorräumen und $\omega \in \operatorname{Alt}^k W$ erhalten wir durch 
+\begin{displaymath}
+(f*\omega)(v_1, \dots, v_k) = \omega(f(v_1), \dots, f(v_k))
+\end{displaymath}
+die \textit{zurückgeholte Form} $f^\ast\omega \in \operatorname{Alt}^k V$. Dabe ist $f^\ast\colon \operatorname{Alt}^k W \rightarrow \operatorname{Alt}^k V$.
+
+\paragraph{Lemma} Für eine lineare Abbildung $f\colon V \rightarrow W$ zwischen zwei endlich-dimensoinalen reellen Vektorräumen und $\omega\in \operatorname{Alt}^k W,\ \eta \in \operatorname{Alt}^l W$ gilt
+\begin{displaymath}
+f^\ast(\omega\wedge\eta) = (f^\ast\omega)\wedge(f^\ast\eta)
+\end{displaymath}
+
+\paragraph{Lemma} Ist $V$ ein endlich-dimensionaler, reeller Vektorraum, $f\colon V \rightarrow V$ linear und $\omega \in \operatorname{Alt}^k V,\ n = \dim V$, so erhalten wir $(f^\ast\omega) = (\det f)\omega$
+
+\subsection{Differentialformen}
+
+\paragraph{Definition} (Differentialform)\\
+Eine Differentialform der Ordnung $k,\ k \in\mathbb{N} \cup \set{0}$, auf einer offenen Menge $\Omega \subset \R^n$ ist eine Abbildung $\omega\colon \Omega \rightarrow \operatorname{Alt}^k \R^n$.
+
+\paragraph{Bemerkung} Jede Differentialform der Ordnung $k$ lässt sich eindeutig durch 
+\begin{displaymath}
+\omega = \sum_{1 \leq j_1 \leq \dots \leq j_k \leq n} a_{j_1, \dots, j_k} \d x_{j_1}\wedge\dots\wedge\d x_{j_k}
+\end{displaymath}
+darstellen, wobei $a_{j_1, \dots, j_k} = \omega(e_{j_1}, \dots, \omega_{j_k})$ ist. Für $f \in C^1(\Omega)$ haben wir 
+\begin{displaymath}
+\d f(x) = \sum_{j=1}^n \frac{\partial f}{\partial x_j}(x) \d x_j
+\end{displaymath}
+
+\paragraph{Definition} (Zurückgeholte Form)\\
+Für offene Mengen $\Omega_1 \subset \R^m,\ \Omega_2 \subset \R^n,\ f \in C^1(\Omega_1, \Omega_2)$ und eine Differentialform $\omega$ der Ordnung $k$ auf $\Omega_2$ ist die auf $\Omega_1$ \textit{zurückgeholte Form} $f^\ast\omega$ durch 
+\begin{displaymath}
+(f^\ast\omega)(x)(v_1, \dots, v_k)=\omega(f(x))(\d f(x)v_1, \dots, \d f(x)v_k)
+\end{displaymath}
+erklärt.
+
+\paragraph{Satz} (Äußere Ableitung)\\
+Für $k\in \mathbb{N}\cup\set{0}$ gibt es genau eine Abbildung $\d$ von der Menge der differenzierbaren Funktionen nach $\operatorname{Alt}^{k+1} \R^n$, die
+\begin{enumerate}
+\item linear ist
+\item im Fall $k=0$, für eine differenzierbare Abbildung $f\colon \Omega \rightarrow \R$, das differential $\d f$ liefert
+\item für jede differenzierbare Differentialform $\omega$ der Ordnung $k$ und eine differenzierbare Differentialform $\eta$ der Ordnung $0$ die Produktregel
+\begin{displaymath}
+\d (\omega\wedge\eta) = (\d \omega) \wedge\eta + 8-1)^k\wedge(\d \eta)
+\end{displaymath}
+erfüllt und
+\item für $\omega \in C^2(\Omega, \operatorname{Alt}^k \R^n)$ der \textit{Exaktheitsbedingung} $\d\d \omega = 0$ genüht.
+\end{enumerate}
+Ist $\omega = \sum_{j_1 <\dots < j_k} a_{j_1, \dots, j_k}\d x_{j_1}\wedge\dots\wedge\d x_{j_k}$, so erhalten wir 
+\begin{displaymath}
+\d\omega = \sum_{j_1 < \dots < j_k}\d a_{j_1, \dots, j_k} \wedge\d x_{j_1}\wedge\dots\wedge\d x_{j_k}
+\end{displaymath}
+
+\paragraph{Definition} Für eine differenzierbare Differentialform $\omega$ wird $\d$ die \textit{äußere Ableitung, Cartan Ableitung} oder \textit{Differential} gennant.
+
+\paragraph{Satz} Für offene Mengen $\Omega_1\subset \R^n,\ f\in C^2(\Omega_1, \Omega_2)$ und eine differezierbare Differentialform ist auf $\Omega_2$ ist auch die auf $\Omega_1$ zurückgeholte Form $f^\ast\omega$ differenzierbar und es gilt $\d (f^\ast\omega)=f^\ast(\d \omega)$.
+
+\subsection{Integration von Differentialformen}
+
+\paragraph{Definition} Sei $\Omega\subset \R^n$ offen. Eine Differetialform $\omega= f\d x_1\wedge\dots\wedge\d x_n$ heißt integrierbar über $A\subset\Omega$, falls $f$ über $A$ integrierbar ist. Wir setzen
+\begin{displaymath}
+\int_A \omega = \int_A f\ d\lambda^n
+\end{displaymath}
+
+\paragraph{Satz} (transformationsformel)\\
+Sind $U, V\subset \R^n$ offen, $\phi\colon V\ $ ein orientierungtreuer $C^1$-Diffeomorphismus und $\omega$ eine integrierbare Differetialform der Ordnung $n$ auf $U$, so gilt
+\begin{displaymath}
+\int_V \phi^\ast\omega = \int_U \omega
+\end{displaymath}
+Im Allgemeinen Fall $k \in \set{1, \dots, n}$ definieren wir Integrale zunächst über Parametrisierung.
+
+\paragraph{Definition} Sei $\Omega\subset\R^n$ und $M\subset\Omega$ eine $k$-dimensionale orientierte Mannigfaltigkeit, sowie $\phi^{-1}\colon W \rightarrow U$ eine Karte eines orientierten Atlanten. Eine auf $M\setminus W$ verschwindende, integrierbare Differentialform $\phi^\ast\omega$ auf $U$
+Def.21?
+
+\paragraph{Definition} Sei $\Omega\subset\R^n$ offen, $M\subset\Omega$ eine $k$-dimensionale Mannigfaltigkeit mit orientiertem Atlas $(\phi^{-1}\colon W_j \rightarrow U_j)_{j = 1, \dots, m}$. Eine Differenialform $\omega\colon \Omega \rightarrow\operatorname{Alt}^k \R^n$ heißt integrirbar, falls $\chi_{W_j}\omega$ für alle $j=1, \dots, m$ im vorherigen Sinne integrierbar ist. Ist $(\alpha_j)_{j=1, \dots, m}$ eine der Überdeckung $(W_j)_{j=1, \dots, m}$ untergeordnete Partition der Eins und $\alpha_j\circ\phi_j$ messbar für $j=1, \dots, m$, so definieren wir das Integral von $\omega$ über $M$ durch
+\begin{displaymath}
+\int_M \omega = \sum_{j=1}^m \int_M \alpha_j\omega
+\end{displaymath}
+wobei auf der rechten Seite die zuvor definierten Integrale stehen.
+
+\paragraph{Satz} (Stokes)\\
+Sei $\Omega\subset\R^n$ offen, $M\subset\Omega$ eine $k$-dimensionale $C^2$-Mannigfaltigkeit, $K\subset M$ eine kompakte Teilmenge mit glattem Rand und $\omega$ eine stetig differenzierbare Differentialform der Ordnung $k-1$ auf $\Omega$ mit $k\geq 2$. Der Rand $\partial K$ sei mit der von $K$ induzierten Ordnung ausgestattet. Dann gilt
+\begin{displaymath}
+\int_K \d\omega = \int_{\partial K} \omega
+\end{displaymath}
+
+\paragraph{Lemma} Für eine stetig differenzierbare Differentialform $\omega$ der Ordnung $k-1$ mit kompakten Träger auf $\R^k,\ k\geq 2$, ist 
+\begin{displaymath}
+\int_{\set{x_1\leq 0}} \d \omega = \int_{\partial \set{x_1 \leq 0}} \omega
+\end{displaymath}
+
+\paragraph{Satz} (Glatte Partition der Eins)\\
+Sei $K\subset \R^n$ kompakt und $(U_j)_{j=1, \dots, m}$ eine offene Überdeckung von $K$, also ${K\subset\bigcup_{j=1}^m U_j}$. Dann gibt es eine der Überdeckung $(U_J)_{j_1, \dots, m}$ untergeordnete Partitioon der Eins $(\alpha_j)_{j=1, \dots, m}$ mit $\alpha_j \in C^\infty(\R^n)$ und $\operatorname{supp} \alpha_j \subset U_j,\ j=1, \dots, m$.
+
+\subsection{Partielle Integration}
+
+\paragraph{Satz} (Satz von Stokes, klassisch)\\
+Sei $\Omega\subset\R^3$ offen, $M\subset \Omega$ eine orientierte zweidimensionale $C^2$-Mannigfaltigkeit, $K\subset M$ eine kompakte Teilmenge mit glattem Rand $\partial K$ und $g\in C^1(\Omega, \R^3)$ ein Vektorfeld. Dann definirt $\omega=g\cdot\d \overrightarrow{s}$ eine stetig differenzierbare Differentialform der Ordnung $1$ auf $\Omega$ und wir haben
+\begin{displaymath}
+\int_K \operatorname{rot} g \cdot \nu\ dA^2 = \int_{\partial K} g \cdot \tau\ dA^1
+\end{displaymath}
+wobei $\nu$das äußere Normalenfeld auf $K$ bezeichnet und $\tau$ das positiv orientierte Tangentialfeld, das von der von $K$ induzierte Ordnung auf $\partial K$ bestimmt wird ist.
+
+\paragraph{Satz} (Satz von Gauß (Divergenzsatz))\\
+Für $\Omega \subset \R^n$ offen, eine Vektorfeld $h \in C^1(\Omega, \R^n)$, $K\subset \Omega$ kompakt und glattem Rand und äußerem Normalenfeld$\nu$ gilt
+\begin{displaymath}
+\int_K \div h\ d\lambda^n = \int_{\partial K} h \cdot \nu\ dA^{n-1}
+\end{displaymath}
+
+\paragraph{Corollar} (Partielle Integration)\\
+Für $\Omega \subset \R^n$ offen, $u, v \in C^1(\Omega),\ K\subset\Omega$ kompakt mit glattem Rand und äußerem Normalenfeld $\nu$ gilt
+\begin{displaymath}
+\int_K\frac{\partial u}{\partial x_j} \nu\ d\lambda^n = \int_{\partial K} uv\nu_j\ dA^{n-1} - \int_K u\frac{\partial v}{\partial x_j}\ d\lambda^n
+\end{displaymath}
+Insbesondere ist $\int_K \frac{\partial u}{\partial x_j}\ d\lambda^n = \int_{\partial K} u\nu_j\ dA^{n-1}$.
+
+\paragraph{Corollar} (Greensche Formel)\\
+Für $\Omega \subset \R^n$ offen, $u, v \in C^2(\Omega),\ K\subset \Omega$ kompakt mit glattem Rand und äußerem Normalenfeld $\nu$ gilt:
+\begin{align*}
+\int_K  \Delta u\ d\lambda^n &= \int_{\partial K} \frac{\partial u}{\partial \nu}\ dA\\
+\int_K \nabla u \cdot v\ d\lambda^n &= \int_{\partial K} u\frac{\partial v}{\partial \nu}\ dA - \int_K u\nabla v\ d\lambda^n\\
+\int_K(u\nabla v - v\nabla u)\ d\lambda^n &= \int_{\partial K} \left(u\frac{\partial v}{\partial \nu} - v\frac{\partial u}{\partial \nu}\right)\ dA
+\end{align*}
+
+\newpage
+
+\section{Übungsblätter}
+
+\subsection{Blatt ?}
+
 
 
 
