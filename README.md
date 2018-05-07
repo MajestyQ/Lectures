@@ -1,4 +1,3 @@
-﻿# Universe
-Unter dem Motto Zusammen leiden gibts hier verschiedend Dateien verschiedener Leute, 
-die das Physikstudium vielleich erleichtern.
-Wer mitmachen will, gibt das am besten so von sich, dass ich das mitbekomme und einrichten kann.
+﻿# Lectures
+This repository contains lectur notes of different classes at University of Heidelberg. If you spot any mistakes feel free to leave some feedback. Since this is a private project the correctnes of any of the content can't be garantueed. \
+Some Files were created in collaboration with [(@mathieukaltschmidt)](https://github.com/mathieukaltschmidt).
