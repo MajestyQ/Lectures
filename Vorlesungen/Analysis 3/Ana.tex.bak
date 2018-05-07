@@ -1,0 +1,987 @@
+
+\documentclass[12pt,a4paper,fleqn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage[left=3cm,right=3cm,top=3.5cm,bottom=3.5cm]{geometry}
+
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{ mathrsfs }
+\usepackage{makeidx}
+
+\author{Quirinus Schwarzenböck}
+\title{Höhere Analysis}
+
+\renewcommand{\labelenumi}{(\roman{enumi})}
+
+\DeclareMathOperator{\im}{Im}
+
+\def\abs#1{{\left\vert #1 \right\vert}}
+\def\norm#1{{\left\Vert #1 \right\Vert}}
+\def\set#1{{\left\{ #1 \right\}}}
+\def\Mid{\ \middle|\ }
+\def\R{{\mathbb{R}}}
+\def\d{{\operatorname{d}}}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Lebesgue Integral}
+
+\subsection{Grundlagen der Maß- \& Integrationstheorie}
+
+\paragraph{Definition}(Algebra $\&\ \sigma$-Algebra)\\
+Eine Algebra $\mathcal{A}$ ist eine Familie von Teilmengen einer gegebenen Menge $\mathit{X}$ mit folgenden Eigenschaften:
+\begin{itemize}
+\item $\mathit{X} \in \mathcal{A}$
+\item $A, B \in \mathcal{A} \Rightarrow A\cup B \in \mathcal{A}$
+\item $\mathit{A} \in \mathcal{A} \rightarrow \mathit{A}^\mathrm{C} \coloneqq \mathit{X}\setminus\mathit{A} \in \mathcal{A}$
+\end{itemize}
+Falls zusätzlich $(\mathit{A}_n)_{n \in \mathbb{N}} \in \mathcal{A} \Rightarrow \bigcup_{i=1}^\infty A_n \in \mathcal{A}$, so spricht man von einer $\sigma$-Algebra.
+
+\paragraph{Lemma}
+Sei $\mathit{X}$ eine Menge, $\mathcal{A}$ eine $\sigma$-Algebra, $(\mathit{A}_k)_{k \in \mathbb{N}} \subset \mathcal{A}$. Dann gehören auch $\bigcap^\infty_{k=1} A_n$ und beispielsweise $A_1 \setminus A_2$ in $\mathcal{A}$.
+
+\paragraph{Definition}(erzeugte und relative $\sigma$-Algebra)\\
+Allgemein ist $\mathfrak{P}(X)$ die größte und $\{X, \emptyset\}$ die kleinste $\sigma$-Algebra. Sei $S \in \mathfrak{P}(X)$, dann stellt
+\begin{align*}
+\Sigma(S) \coloneqq \bigcup \set{\mathcal{A}\ \Mid \mathcal{A}\ \sigma\text{-Algebra mit }S \subseteq \mathcal{A}}
+\end{align*}
+eine $\sigma$-Algebra dar. Es ist die kleinste $\sigma$-Algebra die S enthält und wird als die \textit{erzeugte} $\sigma$-Algebra bezeichnet. $\Sigma(S)$ ist eindeutig bestimmt.\\
+Ist $X$ eine Menge mit $\sigma$-Algebra $\mathcal{A}$ und $Y \subset X$, dann bezeichnen wir 
+\begin{align*}
+\mathcal{A} \cap Y \coloneqq \set{A \cap Y \Mid A \in \mathcal{A}}
+\end{align*}
+als \textit{relative} $\sigma$-Algebra auf $Y$.
+
+\paragraph{Definition}(Topologischer Raum)\\
+Ein topologischer Raum ist ein Paar $(X, \mathcal{O})$ bestehend aus den Mengen $X$ und $\mathcal{O} \subset \mathfrak{P}(X)$ mit
+\begin{itemize}
+\item $\emptyset, X \in \mathcal{O}$
+\item $U, V \in \mathcal{O} \Rightarrow U \cap V \in \mathcal{O}$
+\item $(U_k)_{k \in I} \Rightarrow \bigcup_{k \in I} U_k \in \mathcal{O}$
+für eine belibige Indexmenge $I$
+\end{itemize} 
+Die Elemente von $\mathcal{O}$ werden als offene Mengen bezeichnet.
+
+\paragraph{Bemerkung} $\mathcal{O}$ ist abgeschlossen bezüglich endlichen Schnitten und abzählbaren Vereinigungen.
+
+\paragraph{Definition}(Borel-$\sigma$-Algebra)\\
+Ist $X$ ein topologischer Raum, $\mathcal{O} \subset \mathfrak{P}(X)$, so ist die Borel-$\sigma$-Algebra $\mathcal{B}(X)$ diejenige $\sigma$-Algebra, die von $\mathcal{O}$ erzeugt wird (also diejenige $\sigma$-Algebra, die von den offenen Mengen erzeugt wird). Ihre Elemente heißen Borel-Mengen.\\
+Notation:
+$\mathcal{B}^n=\mathcal{B}(\mathbb{R}^n),\ \mathcal{B}=\mathcal{B}^1$
+
+\paragraph{Definition}(Messraum, Maß, Maßraum)\\
+Eine Menge $X$ mit einer $\sigma$-Algebra $\mathcal{A} \subset \mathfrak{P}(X)$ heißt \textit{Messraum}. Ein \textit{Maß} ist eine Abbildung $\mu\colon \mathcal{A} \rightarrow [0, \infty]$ mit:
+\begin{itemize}
+\item $\mu (\emptyset) = 0$
+\item $\sigma$-Additivität
+\end{itemize}
+Die Elemente von $\mathcal{A}$ heißen \textit{messbar}, $(X, \mathcal{A}, \mu)$ heißt \textit{Maßraum}.
+
+\paragraph{Definition}($\sigma$-Finitheit)\\
+Ein Maß heist $\sigma$\textit{-finit}, falls es eine abzählbare Überdeckung $(X_k)_{k \in \mathbb{N}} \subset \mathcal{A}$ gibt, also $X = \bigcup_{k \in \mathbb{N}} X_k$, mit $\mu (X_k) < \infty\ \forall k$. $\mu$ heißt \textit{endlich}, falls $\mu (X) < \infty$, und \textit{Wahrscheinlichkeitsmaß}, falls $\mu (X) =1$.
+
+\paragraph{Bemerkung} Für $Y \in \mathcal{A}$ können wir die $\sigma$-Algebra $\mathcal{A}$ zu 
+\begin{align*}
+\mathcal{A}\vert_Y = \set{A \in \mathcal{A} \Mid A \subset Y}
+\end{align*}
+einschränken. Dann ist $\mu{\vert _Y} (A) = \mu (A\cap Y), A\cap Y \in \mathcal{A}$ ein Maß und $(Y, \mathcal{A}{\vert _Y}, \mu{\vert_Y})$ ein Maßraum.
+Dieser ist $\sigma$-finit, falls $(X, \mathcal{A}, \mu)$ $\sigma$-finit ist.
+
+\paragraph{Satz} Für jeden Maßraum $(X, \mathcal{A}, \mu)$ und $(A_k)_{k \in \mathbb{N}} \subset\mathcal{A}$ gilt:
+\begin{enumerate}
+\item$A \subset B \Rightarrow \mu (A) \leq \mu(B)$ (Monotonie)
+\item$\mu(\bigcup_{k \in \mathbb{N}}A_k) \leq \sum_{k \in \mathbb{N}}\  \mu (A_k)$ (Subadditivität)
+\item$A_k \nearrow A \Rightarrow \mu(A_k) \nearrow \mu(A)$
+\item$A_k \searrow A \Rightarrow \mu(A_k) \searrow \mu(A), \text{für } \mu(A_1) <\infty$
+\end{enumerate}
+
+\paragraph{Definition}(Borel-Maß)\\
+Sei $X$ ein topologischer Raum mit Borel-$\sigma$-Algebra $\mathcal{B}(X)$. Ein Maß $\mu$ auf $(X, \mathcal{B}(X))$ heißt \textit{Borel-Maß}, falls es auf Kompakta stets endliche Werte annimmt.
+
+\paragraph{Definition}(Regularität)\\
+Sei $X$ ein topologischer Raum, $(X, \mathcal{A}, \mu)$ ein Maßraum. Das Maß $\mu$ heißt regulär von außen/innen, wenn für $A \in \mathcal{A}$ gilt:
+\begin{align*}
+\mu (A) = \text{inf}\{\mu(U) \vert A \subset U, U\ \text{offen}\}
+\end{align*}
+\begin{align*}
+\mu (A) = \text{sup}\{\mu(K) \vert K \subset A, K\ \text{kompakt}\}
+\end{align*}
+Ein Maß heißt \textit{regulär}, falls es regulär von außen und innen ist.
+
+\subsection{Konstruktion von Maßen}
+
+\paragraph{Definition}(Dynkin-System)\\
+Eine Familie $\mathcal{D} \subset \mathfrak{P}(X)$ heißt \textit{Dynkin-System}, falls gilt:
+\begin{itemize}
+\item$X \in \mathcal{D}$
+\item$A \in \mathcal{D} \Rightarrow A^\mathrm{C} \in \mathcal{D}$
+\item$(A_k)_{k \in \mathbb{N}} \subset \mathcal{D}, A_k \cap A_m = \emptyset\ \forall k, m,\ k \not = m \Rightarrow \dot\bigcup_{k \in \mathbb{N}} A_k \in \mathcal{D}$
+\end{itemize}
+
+\paragraph{Bemerkung}
+\begin{itemize}
+\item Ein Dynkin-System ist abgeschlossen unter Mengensubtraktion:
+\begin{align*}
+A, B \in \mathcal{D},\ B \subset A \Rightarrow A \setminus B \in \mathcal{D}
+\end{align*}
+\item Ist $S \subset \mathfrak{P}(X)$, so ist
+\begin{align*}
+\mathcal{D}(S) \coloneqq \bigcap \set{\mathcal{D}\Mid \mathcal{D}  \text{ ist Dynkin-System}, S \in \mathcal{D}}
+\end{align*}
+das von $S$ erzeugte Dynkin-System.
+\end{itemize}
+
+\paragraph{Lemma} Ist $\mathcal{D}$ abgeschlossen unter endlichen Schnitten oder alternativ unter beliebigen endlichen Vereinigungen, so ist $\mathcal{D}$ eine $\sigma$-Algebra.
+
+\paragraph{Lemma} Sei $S$ eine (nicht leere) Familie von Teilmengen einer Menge X, die unter endlichen Schnitten abgeschlossen ist, dann ist $\mathcal{D}(S) = \Sigma(S)$.
+
+\paragraph{Bemerkung} Voriges Lemma lässt sich wie folgt anwenden:
+\begin{itemize}
+\item Verifiziere eine Eigenschaft $\varepsilon$ auf einer Menge $S \subset \mathfrak{P}(X)$, die abgeschlossen unter endlichen Schnitten ist
+\item Zeige, dass die Menge aller Mengen in $\mathfrak{P}(X)$, die $\varepsilon$ enthalten ein Dynkin-System bildet
+\item Schließe, dass $\varepsilon$ auf $\Sigma(S)$ gilt
+\end{itemize} 
+
+\paragraph{Satz}(Eindeutigkeit von Maßen)\\
+Sei $(X, \Sigma, \mu)$ein Maßraum mit $\Sigma \coloneqq \Sigma(S)$, $S \subset \mathfrak{P}(X)$ eine Familie von Mengen, die abgeschlossen unter endlichen Schnitten ist. Weiter enthält $S$ eine Folge aufsteigender Mengen $(X_k)_{k \in \mathbb{N}} \subset S \text{mit } X_k \nearrow X \text{und } \mu(X) < \infty \ \forall k \in \mathbb{N}$. Dann ist $\mu$ auf $\Sigma$ durch die Werte auf $S$ eindeutig bestimmt.
+
+\paragraph{Definition} (Prämaß)\\
+Sei $X$ eine Menge und $\mathcal{A} \subset \mathfrak{P}(X)$ eine Algebra. Ein Prämaß auf $X$ ist eine $\sigma$-additive Abbildung $\mu\colon\mathcal{A} \rightarrow [0, \infty]$ und $\mu(\emptyset) = 0$. Ein Prämaß auf einer $\sigma$-Algebra ist ein Maß.
+
+\paragraph{Corollar} Sei $\mu$ ein $\sigma$-finite Prämaß auf einer Algebra $\mathcal{A}$. Dann gibt es höchstens eine Fortsetzung auf $\Sigma(\mathcal{A})$
+
+\paragraph{Definition} (Äußeres Maß)\\
+Eine Funktion $\mu^*\colon \mathfrak{P}(X) \rightarrow [0, \infty]$ ist ein äußeres Maß auf $X$, falls die folgenden Eigenschaften erfüllt sind:
+\begin{itemize}
+\item$\mu^*(\emptyset) = 0$
+\item$\mu^*(A_1) \leq \mu^*(A_2), \text{falls } A_1 \subset A_2$
+\item$\mu^*(\bigcup_{k \in \mathbb{N}}A_k) \leq \sum_{k \in \mathbb{N}}\ \mu^*(A_k)$
+\end{itemize}
+
+\paragraph{Satz} (Fortsetzung äußerer Maße)\\
+Sei $\mu^*$ ein äußeres Maß auf einer Menge $X$. Wir sagen, die Menge $A \subset X$ erfüllt die \textit{Carathéodory-Bedingung}, falls 
+\begin{align*}
+\mu^*(E) = \mu^*(E\cap A) + \mu^*(E \cap A^\mathrm{C})\ \forall E \in X
+\end{align*}
+gilt. Die Familie $\Sigma$ aller Mengen die die Carathéodory-Bedingung erfüllen bildet eine $\sigma$-Algebra und $\mu^*\vert_\Sigma$ ist ein vollständiges Maß, d. h. jede Teilmenge einer Nullmenge ist messbar. Maße erfüllen wegen ihrer $\sigma$-Additivität die Carathéodory-Bedingung.
+
+\subsubsection*{Lebesgue Maß}
+Für ein verallgemeinertes Intervall der Form $I = (a, b)$, $[a, b)$, $(a, b]$, $[a, b]$ mit\linebreak \mbox{$-\infty \leq a \leq b \leq +\infty$} setzen wir $\lambda(I) \coloneqq b - a \in [0, \infty]$. Dies ergibt ein eindeutiges $\sigma$-finites Prämaß auf der Algebra $\mathcal{A}$, die aus Vereinigungen von Intervallen im obigen Sinne besteht.\\
+Außerdem existiert eine $\sigma$-Algebra $\Lambda \supset \mathcal{A}$, so dass $\lambda = \lambda^*$ ein Maß ist. Die Elemente von $\Lambda$ heißen \textit{Lebesgue-messbare} Mengen, $\lambda$ ist das \textit{Lebesgue-Maß}.
+
+\subsection{Messbare Funktionen}
+\paragraph{Definition} Seien $(X, \Sigma_X)$, $(Y, \Sigma_Y)$ Messräume. Eine Funktion $f\colon X \rightarrow Y$ heißt \textit{messbar} ($\Sigma_X$-$\Sigma_Y$-\textit{messbar}), falls $f^{-1}(A) \in \Sigma_X \ \forall A \in \Sigma_Y$.\\
+Ist $X$ ein topologischer Raum und $\Sigma_X$ die entsprechende Borel-$\sigma$-Algebra, so nennen wir eine messbare Funktion \textit{Borel-Funktion}.
+
+\paragraph{Bemerkung} Es genügt, Messbarkeit für ein Mengensystem $S \subset \mathfrak{P}(Y)$ mit ${\Sigma(S) = \Sigma_Y}$ zu überprüfen.
+
+\paragraph{Lemma} Eine Funktion $f\colon (X, \Sigma)\rightarrow (\mathbb{R}^n, \mathcal{B}^n)$ ist genau dann messbar, wenn gilt
+\begin{align*}
+f^{-1} (I) \in \Sigma \ \forall I = \bigtimes\limits_{j = 1}^n (a_j, \infty),\ a_1, \dotsc, a_n \in \mathbb{R}
+\end{align*}
+Insbesondere ist f genau dann messbar, wenn jede seiner Komponenten $x \mapsto \langle f(x), e_l \rangle$, $l = 1, \dotsc, n$ messbar ist. Eine komplexwertige Funktion ist genau dann messbar, wenn Real- und Imaginärteil messbar sind.
+
+\paragraph{Lemma} Seien $(X, \Sigma_X)$, $(Y, \Sigma_Y)$, $(Z, \Sigma_Z)$ Messräume. Sind $f\colon X \rightarrow Y$, ${g: Y \rightarrow Z}$ messbar, dann ist auch $g \circ f\colon X \rightarrow Z$ messbar. Sind $\Sigma_X, \Sigma_Y$ Borel-$\sigma$-Algebren und $X, Y$ entsprechend topologische Räume, so ist jede stetige Funktion $f\colon X \rightarrow Y$ messbar.
+
+\paragraph{Lemma} Sind $f, g: (X, \Sigma_X) \rightarrow (\mathbb{R}, \mathcal{B})$ messbar, so sind auch $f \cdot g, f+g$ messbar.
+
+\paragraph{Lemma} Sei $(f_k)_{k \in \mathbb{N}}$ eine Folge messbarer Funktionen $(X, \Sigma) \rightarrow (\overline{\mathbb{R}}, \overline{\mathcal{B}})$. Dann sind auch $\sup_{k \in \mathbb{N}} f_k,\ \inf_{k \in \mathbb{N}} f_k,\ \limsup_{k \in \mathbb{N}} f_k,\ \liminf_{k \in \mathbb{N}} f_k$, sowie $\min(f, g),\ \max(f, g),\ \vert f \vert$, $f^\pm$ und alle Limites messbar.
+
+\subsection{Integration}
+
+\paragraph{Definition} Eine messbare Funktion heißt \textit{einfach}, falls ihr Bild endlich ist, d. h. es gibt Mengen $A_1, \dotsc, A_m \in \Sigma, \alpha_1, \dotsc, \alpha_m \in \mathbb{R}$ mit
+\begin{align*}
+f = \sum \limits _{j = 1}^m \alpha_j \chi_{A_j}
+\end{align*}
+Der Vektorraum der einfachen Funktionen wird mit $S(X, \mu)$ bezeichnet.
+
+\paragraph{Definition} (Integral)\\
+Das Integral einer nicht-negativen, einfachen Funktion über der Menge $A \in \Sigma$ wird durch
+\begin{align*}
+\int_A f\ \d\mu \coloneqq \sum \limits _{j = 1}^m \alpha_j \mu(A \cap A_j)
+\end{align*}
+erklärt, wobei wir $0 \cdot \infty = 0$ vereinbaren.
+
+\paragraph{Lemma} Für $f, g \in S(X, \mu),\ f, g \geq 0$ hat das Integral die folgenden Eigenschaften:
+\begin{enumerate}
+\item$\int_A f\ \d\mu = \int_X f \chi_A d\mu, A \in \Sigma$
+\item$\int_{\bigcup_{k \in \mathbb{N}}B_k}f\ \d\mu = \sum_{k \in \mathbb{N}} \int_{B_k} f\ \d\mu$, für paarweise disjunkte $(B_k)_{k \in \mathbb{N}} \subset \Sigma$
+\item$\int_A \alpha f\ \d\mu = \alpha \int_A d\mu$, für $\alpha \geq 0$
+\item$\int_A (f + g)\ \d\mu = \int_A f\ \d\mu + \int_A g\ \d\mu$
+\item$A \subset B, B \in \Sigma \Rightarrow \int_A f\ \d\mu \leq \int_B f\ \d\mu$
+\item$f \leq g \Rightarrow \int_A f\ \d\mu \leq \int_A g\ \d\mu$
+\end{enumerate}
+
+\paragraph{Definition} (Integral)\\
+Sei $(X, \Sigma, \mu)$ ein Maßraum, $A \in \Sigma, f\colon (X, \Sigma) \rightarrow (\mathbb{R}, \mathcal{B})$ messbar und nicht negativ. Dann ist 
+\begin{align*}
+\int_A f\ \d\mu \coloneqq \sup \set{\int_A g\ \d\mu \Mid g \in S(X, \mu), g \leq f, g \geq 0 }
+\end{align*}
+Bis auf (\textit{ii}) und (\textit{iv}) übertragen sich die Aussagen aus vorigem Lemma auf beliebige, nicht-negative, messbare Funktionen durch Approximation.
+
+\paragraph{Satz} (Monotone Konvergenz (Beppo Levi))\\
+Sei $(f_k)_{k \in \mathbb{N}}$ eine Folge messbarer, nicht negativer Funktionen $f_k: (X, \Sigma) \rightarrow (\mathbb{R}, \mathcal{B})$ mit $f_k \nearrow f$. Dann ist für $A \in \Sigma$
+\begin{align*}
+\int_A f_k\ \d\mu \rightarrow \int_A f\ \d\mu 
+\end{align*}
+
+\paragraph{Lemma} Ist $f \geq 0$ messbar, so wird durch $\nu(A) \coloneqq \int_A f\ \d\mu$ ein Maß mit\linebreak ${\int g\ \d\nu = \int fg\ \d\mu}$ für jedes messbare $g \geq 0$ definiert und wir schreiben $\d\nu = f\ \d\mu$.
+
+\paragraph{Satz} (Lemma von Fatou)\\
+Sei $(X, \Sigma, \mu)$ ein Maßraum. Ist $(f_k)_{k \in \mathbb{N}}$ eine Folge nicht-negativer Funktionen\linebreak ${(X, \Sigma) \rightarrow (\mathbb{R}, \mathcal{B})}$, so haben wir für ein beliebiges $A \in \Sigma$
+\begin{align*}
+\int_A \liminf_{k \rightarrow \infty} f_k\ \d\mu \leq \liminf_{k \rightarrow \infty} \int_A f_k\ \d\mu 
+\end{align*}
+
+\paragraph{Definition} (Nochmal Integral)\\
+Sei $(X, \Sigma, \mu)$ ein Maßraum,  $A \in \Sigma$, $f\colon(X, \Sigma) \rightarrow (\mathbb{R}, \mathcal{B})$ messbar. Ist $\int_A f^\pm \d\mu < \infty$, so nennen wir $f$ über $A$ integrierbar und setzen
+\begin{align*}
+\int_A f\ \d\mu = \inf \int_A f^+\ \d\mu - \int_A f^-\ \d\mu \in \mathbb{R}
+\end{align*}
+Die Menge der über $A$ integrierbaren Funktionen bezeichnen wir mit $\mathscr{L}^1(A, \mu)$.
+
+\paragraph{Lemma} Unter dieser Bedingung ist das Integral linear und erfüllt sämtliche zuvor genannten Eigenschaften. Eine Funktion ist genau dann integrierbar, falls ihr Betrag integrierbar ist. Darüber hinaus gilt für integrierbar Funktionen $f, g\colon X \rightarrow \mathbb{R}$
+\begin{align*}
+\bigg|{\int_A f\ \d\mu}\bigg| \leq \int_A \vert{f}\vert\ \d\mu 
+\end{align*}
+und die Dreiecksungleichung
+\begin{align*}
+\int_A \vert{f + g}\vert\ \d\mu \leq \int_A \vert{f}\vert\ \d\mu + \int_A \vert{g}\vert\ \d\mu
+\end{align*}
+
+\paragraph{Lemma} Sei $(X, \Sigma, \mu)$ ein Maßraum,$f\colon X \rightarrow \mathbb{R}$ messbar
+\begin{enumerate}
+\item Wir haben $\int_X \vert{f}\vert\ \d\mu = 0 \Leftrightarrow f(x) = 0$ für $\mu$-fast alle $x \in X$
+\item Ist $f$ außerdem integrierbar oder nicht negativ $A \in \Sigma$, so ist 
+\begin{align*}
+\mu(A) = 0 \Leftrightarrow \int_A f\ \d\mu = 0
+\end{align*}
+\end{enumerate}
+
+\paragraph{Lemma} (Mehr Fatou)\\
+Sei $(X, \Sigma, \mu)$ ein Maßraum, $A \in \Sigma$, $(f_k)_{k \in \mathbb{N}}$ eine Folge messbarer Funktionen $X \rightarrow \mathbb{R}$ und $g\colon X \rightarrow \mathbb{R}$ integrierbar, dann gilt
+\begin{align*}
+\int_A \liminf_{k \rightarrow\infty} f_k\ \d\mu \leq \liminf_{k \rightarrow \infty} \int_A f_k\ \d\mu, \text{falls } g \leq f_k\ \forall k \in \mathbb{N}
+\end{align*}
+\begin{align*}
+\limsup_{k \rightarrow \infty} \int_A f_k\ \d\mu \leq \int_A \limsup_{k \rightarrow \infty} f_k\ \d\mu, \text{falls } f_k \leq g\ \forall k \in \mathbb{N}
+\end{align*}
+
+\paragraph{Satz} (Dominierte Konvergenz)\\
+Sei $(X, \Sigma, \mu)$ ein Maßraum, $A \in \Sigma$, $(f_k)_{k \in \mathbb{N}}$ eine Folge messbarer Funktionen $X \rightarrow \mathbb{R}$, die punktweise fast überall gegen $f\colon X \rightarrow \mathbb{R}$ konvergiert. Gibt es eine Majorante, d. h. eine Integrierbare Funktion $g\colon X \rightarrow \mathbb{R}$ mit $\sup \vert (f_k)_{k \in \mathbb{N}} \vert \leq g$, so ist auch $f$ integrierbar und wir haben $\int_A f_k\ \d\mu \xrightarrow{k \rightarrow \infty} \int_A f\ \d\mu$.
+
+\paragraph{Bemerkung} Für stetige und Lebesgue-integrierbare Funktionen auf reellen Intervallen stimmen Riemann- und Lebesgueintegral überein.
+
+\subsection{Produktmaß}
+
+\paragraph{Notation} Für Messräume $(X_1, \Sigma_1)$, $(X_2, \Sigma_2)$ bezeichnen wir die $\sigma$-Algebra, die alle \glqq Rechtecke\grqq\ der Form $A_1 \times A_2$ mit $A_1 \in \Sigma_1, A_2 \in \Sigma_2$ enthält mit $\Sigma_1 \otimes \Sigma_2$.
+
+\paragraph{Lemma} (Schnitt-Eigenschaft)\\
+Für Messräume $(X_1, \Sigma_1)$, $(X_2, \Sigma_2)$ und $A \in \Sigma_1 \otimes \Sigma_2 \subset \mathfrak{P}(X_1 \times X_2)$ liegen die Schnitte
+\begin{align*}
+A_1(x_2) \coloneqq \set{x_1 \in X_1 \Mid (x_1, x_2) \in A} 
+\end{align*}
+\begin{align*}
+A_2(x_1) \coloneqq \set{x_2 \in X_2 \Mid (x_1, x_2) \in A} 
+\end{align*}
+in $\Sigma_1$, bzw $\Sigma_2$.
+
+\paragraph{Corollar} Seien $(X_1, \Sigma_1)$, $(X_2, \Sigma_2)$ Messräume und ${f\colon (X_1 \times X_2, \Sigma_1 \otimes \Sigma_2) \rightarrow (\mathbb{R}, \mathcal{B})}$ messbar. Dann ist $x_1 \mapsto f(x_1, x_2)$ für jedes $x_2 \in X_2$ auf $X_1$ messbar und entsprechend $x_2 \mapsto f(x_1, x_2)$ für jedes $x_1 \in X_1$ auf $X_2$.
+
+\paragraph{Satz} Sind $(X_1, \Sigma_1, \mu_1)$, $(X_2, \Sigma_2, \mu_2)$ Maßräume mit $\sigma$-finiten Maßen und ${A \in \Sigma_1 \otimes \Sigma_2}$. Dann sind die Abbildungen $x_1 \mapsto \mu_2(A_2(x_1)), x_2 \mapsto \mu_1(A_1(x_2))$ auf $X_1$, bzw. $X_2$ messbar und es ist
+\begin{align*}
+\int_A \mu_2(A_2(x_1)) d\mu_1(x_1) = \int_A \mu_1(A_1(x_2))\ \d\mu_2(x_2)
+\end{align*}
+
+\paragraph{Definition} Seien $(X_1, \Sigma_1, \mu_1)$, $(X_2, \Sigma_2, \mu_2)$ Maßräume mit $\sigma$-finiten Maßen. Für $A \in \Sigma_1 \otimes \Sigma_2$ setzen wir 
+\begin{align*}
+(\mu_1 \otimes \mu_2)(A) \coloneqq \int_{X_1} \mu_2(A_2(x_1))\ \d\mu(x_1) = \int_{x_2} \mu_1(A_1(x_2))\ \d\mu_2(x_2)
+\end{align*}
+
+\paragraph{Lemma} Das Produktmaß ist für $\sigma$-finite Maße ebenfalls ein Maß und es ist eindeutig bezüglich $(\mu_1 \otimes \mu_2)(A_1 \times A_2) = \mu_1(A_1) \mu_2(A_2)$.
+
+\paragraph{Satz} (Fubini)\\
+Seien $(X_1, \Sigma_1, \mu_1)$, $(X_2, \Sigma_2, \mu_2)$ Maßräume mit $\sigma$-finiten Maßen und\linebreak ${f\colon (X_1 \times X_2, \Sigma_1 \otimes \Sigma_2) \rightarrow (\mathbb{R}, \mathcal{B})}$ messbar.
+\begin{enumerate}
+\item (Tonelli) Ist $f$ nicht-negativ, so sind $\int_{X_2} f(\cdot, x_2)\ \d\mu_2(x_2)$ und $\int_{X_1} f(x_1, \cdot )\ \d\mu_1(x_1)$ als Funktion auf $X_1$ bzw. $X_2$ beide messbar und es gilt
+\begin{align*}
+\iint\limits_{X_1 \times X_2} f(x_1, x_2)\ d(\mu_1 \otimes \mu_2)(x_1, x_2) &=& \int_{X_1} \left(\int_{X_2} f(x_1, x_2)\ \d\mu_2(x_2)\right)\ \d\mu_1(x_1)\\
+&=& \int_{X_2} \left(\int_{X_1} f(x_1, x_2)\ \d\mu_1(x_1)\right)\ \d\mu_2(x_2)
+\end{align*}
+\item Allgemein ist $f \in \mathscr{L}^1(X_1 \times X_2, \mu_1 \times \mu_2)$ äquivalent zu
+\begin{align*}
+&\int_{X_1} \vert f(x_1, \cdot) \vert\ \d\mu_1(x_1) \in \mathscr{L}^1(X_2, \mu_2)\\
+\text{bzw. } & \int_{X_2} \vert f(\cdot, x_2) \vert\ \d\mu_2(x_2) \in \mathscr{L}^1(X_1, \mu_1)
+\end{align*}
+und in diesem Fall gilt (i).
+\end{enumerate}
+
+\paragraph{Lemma} Seien $(X_1, \Sigma_1)$, $(X_2, \Sigma_2)$ Messräume, $S_1 \in \Sigma_1$, $S_2 \in \Sigma_2$ mit \mbox{$\Sigma_{X_1}(S_1) = \Sigma_1$}, $\Sigma_{X_2}(S_2) = \Sigma_2$. Dann gilt
+\begin{align*}
+\Sigma \coloneqq \Sigma_1 \otimes \Sigma_2 = \Sigma_{X_1 \times X_2}(S_1 \times S_2) 
+\end{align*}
+wobei $S_1 \times S_2 = \set{A_1 \times A_2 \Mid A_1 \in S_1, A_2 \in S_2}$.
+
+\paragraph{Lemma} Gegeben seien Maßräume $(X_j, \Sigma_j, \mu_j),\ j=1, 2, 3$, mit $\sigma$-finiten Maßen. Dann gilt $(\Sigma_1 \otimes \Sigma_2) \otimes \Sigma_3 = \Sigma_1 \otimes (\Sigma_2 \otimes \Sigma_3)$ und $(\mu_1 \otimes \mu_2) \otimes \mu_3 = \mu_1 \otimes (\mu_2 \otimes \mu_3)$.
+
+\paragraph{Satz} (Lebesgue-Maß)\\
+Das durch $\lambda^n \coloneqq \lambda_1 \otimes \lambda_2 \otimes \dotsc \otimes \lambda_n$ definierte \textit{Lebesue-Maß} auf $\mathbb{R}^n$ besitzt die folgenden Eigenschaften (im folgenden verwenden wir immer die Borel-$\sigma$-Algebra):
+\begin{enumerate}
+\item Durch die Werte auf der Menge $J$ sämtlicher Quader der Form $I = \bigtimes_{j=1}^n I_j$, wobei $I_j$ Intervalle sind, ist $\lambda^n$ eindeutig bestimmt.
+\item Für jedes $B \in \mathcal{B}^n$ gilt:
+\begin{align*}
+\lambda^n(B) = \inf \set{\sum_{k \in \mathbb{N}} \lambda^n(A_k) \Mid (A_k)_{k \in \mathbb{N}} \subset J,\ B \subset \bigcup_{k \in \mathbb{N} (A_k)}}
+\end{align*}
+\item Das Maß $\lambda^n$ ist translationsinvariant und bis auf Normierung das einzige Borelmaß mit dieser Eigenschaft.
+\end{enumerate}
+
+\paragraph{Bemerkung} Das Produktmaß zweier Maße ist im Allgemeinen nicht vollständig.
+
+\subsection{Transformation}
+\paragraph{Lemma} (Bildmaß)\\
+Seien $(X, \Sigma_X)$, $(Y, \Sigma_Y)$ Messräume, $f\colon X \rightarrow Y$ messbar. Ist $\mu$ ein Maß auf $(X, \Sigma_X)$, so wir durch 
+\begin{align*}
+(f_\ast\mu)(B) \coloneqq \mu\big(f^{-1}(B)\big),\ B \in \Sigma_Y
+\end{align*}
+ein Maß auf Y definiert, das \textit{Bildmaß von $\mu$ bezüglich $f$}. Wir haben \mbox{$(f_\ast\mu(B))= 0$} $\forall B \in \Sigma_Y$ mit $B \cap f(X) = \emptyset$.
+
+\paragraph{Satz} Sei $(X, \Sigma, \mu)$ ein Maßraum, $Y$ ein topologischer Raum, \mbox{$f\colon (X, \Sigma) \rightarrow (Y, \mathcal{B}(Y))$}, $g\colon (Y, \mathcal{B}(Y)) \rightarrow (\mathbb{R}, \mathcal{B})$ messbar. Dann ist $g \circ f\colon X \rightarrow \mathbb{R}$ genau dann $\mu$-fast überall nicht-negativ oder integrierbar, wenn das auf $g$ bezüglich $f _\ast \mu$ zutrifft und in diesem Fall gilt:
+\begin{align*}
+\int_Y g\ \d(f_\ast \mu) = \int_X (g \circ f)\ \d\mu 
+\end{align*}
+
+\paragraph{Satz} (Transformationssatz)\\
+Seien $U, V \subset \mathbb{R}^n$ offen und $f \in C^1(U, V)$ und $f$ ein Diffeomorphismus, dann gilt $(f^{-1}) _\ast \lambda^n = \vert J_f \vert \lambda^n,\ J_f = \det(Df)$
+ mit der Jacobi-Matrix $Df$ und es gilt:
+\begin{align*}
+\int_U (g \circ f)\vert J_f \vert\ \d\lambda^n = \int_V g\ \d\lambda^n
+\end{align*}
+für alle nicht-negativen oder integrierbaren Funktionen $g\colon V \rightarrow \mathbb{R}$.
+
+\section{$L^p$-Räume}
+
+\paragraph{Definition} ($L^p$-Norm)\\
+Die $L^p$-Norm eine messbaren Funktion $f\colon (X, \Sigma) \rightarrow (\mathbb{R}, \mathcal{B})$ wird durch
+\begin{align*}
+\Vert f \Vert _{L^p} \coloneqq \bigg( \int_X \vert f \vert ^p\ \d\mu \bigg)^{\frac{1}{p}},\ p \in [1, \infty)
+\end{align*}
+erklärt. Mit $\mathscr{L}^p(X, \mu)$ bezeichnen wir die Menge aller messbaren Funktionen\linebreak \mbox{$f\colon (X, \Sigma) \rightarrow (\mathbb{R}, \mathcal{B})$}, deren $L^p$-Norm endlich ist. Zunächst ist die $\mathscr{L}^p(X, \mu)$ wegen
+\begin{align*}
+\vert f + g \vert ^p \leq 2^p \max(\vert f \vert, \vert g \vert)^p \leq 2^p (\vert f \vert ^p + \vert g \vert ^p)
+\end{align*}
+ein Vektorraum.
+
+\paragraph{Lemma} Sei $f\colon (X, \Sigma) \rightarrow (\mathbb{R}, \mathcal{B})$ messbar. Dann gilt
+\begin{align*}
+\int_X \vert f \vert ^p\ \d\mu = 0 \Leftrightarrow f = 0\ \mu \text{-fast überall}
+\end{align*}
+
+\subsubsection*{Komische Zwischendefinition} 
+Also folgt $\Vert g \Vert_{L^p} = 0 \Rightarrow \mu$-fast überall. Wir setzen
+\begin{align*}
+\mathcal{N}(X, \mu) = \set{f\colon (X, \Sigma) \rightarrow (\mathbb{R}, \mathcal{B}) \Mid f \text{ messbar},\ f(x) = 0\ \mu\text{-f.ü.}}
+\end{align*}
+Offenbar ist $\mathcal{N}$ ein linearer Unterraum von $\mathscr{L}^p$. Insofern können wir den Quotientenraum bilden und definieren
+\begin{align*}
+L^p(X, \mu) \coloneqq \mathscr{L}^p(X, \mu)/\mathcal{N}(X, \mu)
+\end{align*}
+Für $(X \subset \mathbb{R}^n$ schreiben wir $L^p(X) \coloneqq L^p(X, \lambda^n)$, dann ist die $L^p$-Norm wohldefiniert auf $L^p$.
+Man beachte, dass für ein $f \in L^p(X, \mu)$ und $ x\in X$ der Wert $f(x)$ i. A. nicht wohldefiniert ist.\\
+Im Fall $p = 2$ haben wir einen Hilbertraum, also einen vollständigen, normierten Raum (mit Skalarprodukt $\langle f, g\rangle = \int_X f(x)g(x)\ \d\mu(x)$)
+Im Fall $ p = \infty$ definieren wir das \textit{essentielle Supremum} von $f$
+\begin{align*}
+\Vert f \Vert_{L^\infty} &\coloneqq \inf \set{s \geq 0 \Mid \mu(\{x \in X \mid \vert f(x)\vert \geq s\})=0}\\
+&= \sup \set{s\geq 0 \mid \mu(\set{x \in X \Mid \vert f(x) \vert \geq s }) > 0 } 
+\end{align*}
+Wir bezeichnen die Mengen der essentiellen beschränkten Funktionen mit $B(X, \mu)$ und setzen wie gehabt 
+\begin{align*}
+L^\infty(X, \mu) = B(X, \mu)/\mathcal{N}(X, \mu)
+\end{align*}
+und $\Vert f \Vert_{L^\infty (X, \mu)}$ ist nach Konstruktion unabhängig vom gewählten Vertreter.
+
+\subsection{Ungleichungen}
+
+\paragraph{Erinnerung} (konvex)\\
+Eine reelle Funktion heißt \textit{konvex}, falls
+\begin{align*}
+\phi(\lambda x + (1 - \lambda) y ) \leq \lambda \phi (x) + (1 - \lambda) \phi(y)
+\end{align*}
+für alle $x, y \in (a, b),\ \lambda \in (0,1)$, beziehungsweise \textit{strikt konvex}, falls die strikte Ungleichung gilt. Jede Norm auf einem Vektorraum $X$ ist konvex.
+
+\paragraph{Lemma} Die folgenden Aussagen gelten für jedes konvexe $\phi: (a, b) \rightarrow \mathbb{R}$:
+\begin{enumerate}
+\item Die Funktion $\phi$ ist lokal Lipschitz-stetig, d. h. für jedes kompakte Intervall $I \subset (a, b)$ gibt es ein $L_I < \infty$ mit $\vert \phi(x) - \phi(y) \vert \leq L_I \vert x - y \vert$ für alle $x, y \in I$.
+\item Die links- und rechtsseitigen Ableitungen
+\begin{align*}
+\phi'_{\pm}(x) = \lim_{h \searrow 0} \frac{\phi (x \pm h) - \phi (x)}{\pm h}
+\end{align*}
+existieren und sind monoton nicht fallend. Darüber hinaus existiert $\phi'$ bis auf eine Nullmenge.
+\item Für ein festes $\overline{x} \in (a, b)$ und jedes $\alpha \in [\phi'_-(\overline{x}), \phi'_+(\overline{x})]$ gilt
+\begin{align*}
+\phi (y) \geq \phi(\overline{x}) + \alpha(x - \overline{x})\ \forall y \in (a, b)
+\end{align*}
+Diese Ungleichung ist strikt für strikt konvexe $\phi$ und $y \not = \overline{x}$
+\end{enumerate}
+
+\paragraph{Satz} (Jensen)\\
+Sei $\phi: (a, b) \rightarrow \mathbb{R}$ konvex für $-\infty \leq a < b \leq +\infty$. Ist $\mu$ ein Wahrscheinlichkeitsmaß auf $(X, \Sigma$ und $f \in \mathscr{L}^1(X, \mu)$ mit $a < f(x) < b$ für alle $x \in X$, dann ist der negative Teil von $\phi \circ f$ integrierbar und
+\begin{align*}
+\phi \bigg(\int_X f\ \d\mu \bigg) \leq \int_X (\phi \circ f)\ \d\mu 
+\end{align*}
+Ist $\phi \geq 0$ nicht fallend, $f \geq 0$ und $\phi(b) \coloneqq \lim_{x \nearrow b} \phi(x)$, so gilt die Schlussfolgerung auch für nicht-integrierbare (messbare) $f$.
+
+\paragraph{Satz} (Hölder)\\
+Seien $p, q \in [1, \infty)$ mit $\frac{1}{p} + \frac{1}{q} = 1$ (dual). Ist $f \in L^p(X, \mu)$ und $g \in L^{q}(X, \mu)$, so folgt $fg \in {L}^1(X, \mu)$ und 
+\begin{align*}
+\Vert fg \Vert_{L^1} \leq \Vert f \Vert_{L^p} \cdot \Vert g \Vert_{L^{q}}
+\end{align*}
+
+\paragraph{Zusatz} Im Fall $p \in (1, \infty)$ ist $y \mapsto \vert y \vert^p$ strikt konvex, s.d. Gleichheit impliziert, dass $h = \vert f \vert \vert g \vert^{1 - q}$ konstant ist.
+
+\paragraph{Corollar} Für jedes $f \in {L}^p(X, \mu)$ mit $p \in [1, \infty)$ gilt
+\begin{align*}
+\Vert f \Vert_{L^p} = \sup \set{ \int_X fg\ \d\mu \Mid g \in L^{q}(X, \mu),\ \Vert g \Vert_{L^{q}} = 1 }
+\end{align*}
+
+\paragraph{Lemma} Sei $\mu$ ein $\sigma$-finites Maß, $f\colon (X, \Sigma) \rightarrow (\mathbb{R}, \mathcal{B})$ messbar und $p \in [1, \infty)$. Gilt $f \cdot s \in {L}^1$, für jedes $s \in S(X, \mu) \cap \mathscr{L}^1(X, \mu)$, so folgt $f \in {L}^p(X, \mu)$ und 
+\begin{align*}
+\Vert f \Vert_{L^p} = \sup \set{ \int_X f \cdot s\ \d\mu \Mid s \in S(X, \mu) \cap \mathscr{L}^1(X, \mu),\ \Vert s \Vert_{L^{q}} = 1 }
+\end{align*}
+
+\paragraph{Satz} (Minkowski)\\
+Seien $\mu, \nu$ zwei $\sigma$-finite Maße auf Mäßräumen $(X, \Sigma, \mu)$, $(Y, \Upsilon, \nu)$ und $f$ eine\linebreak \mbox{$(\mu \otimes \nu)$-messbare} Funktion. Dann haben wir für $p \in [1, \infty)$
+\begin{align*}
+\bigg \Vert \int_Y f(\cdot, y)\ \d\nu(y)\bigg\Vert_{L^p} \leq \int_Y \Vert f(\cdot, y) \Vert_{L^p} \ \d\nu(y)
+\end{align*}
+
+\paragraph{Lemma} Sei $p \in [1, \infty)$ und $f_k \in {L}^p(X, \mu)$ mit $M \coloneqq \sup_{k \in \mathbb{N}} \Vert f_k \Vert_{L^p} < \infty$ konvergiere punktweise $\mu$-fast überall gegen eine Grenzfunktion $f$. Dann ist $f \in {L}^p(X, \mu)$ und 
+\begin{align*}
+\Vert f_k \Vert^p_{L^p} - \Vert f_k - f \Vert^p_{L^p} \xrightarrow{k \rightarrow \infty} \Vert f \Vert^p_{L^p}
+\end{align*}
+
+\subsection{Vollständigkeit}
+
+\paragraph{Satz} (Riesz-Fischer (Vollständigkeit))\\
+Der Raum ${L}^p(X, \mu)$ ist für $p \in [1, \infty]$ vollständig und ein Banachraum.
+
+\paragraph{Corollar} Konvergiert eine Folge in ${L}^p(X, \mu)$, $p \in [1, \infty]$, so gibt es eine Teilfolge, die punktweise $\mu$-fast überall konvergiert. Die Grenzwerte einer in ${L}^p$ und \mbox{${L}^q,\ p, q \in [1, \infty]$} konvergierenden Folge stimmen fast überall überein.
+
+\subsection{Approximation}
+
+\paragraph{Definition} Eine Teilmenge $A$ eines topologischen Raums $X$ heißt dicht, falls es zu jedem Punkt $x \in X$ eine gegen $x$ konvergierende Folge in $A$ gibt.\\
+Erinnerung: Eine Folge $(\xi_k)_{k \in \mathbb{N}}$ konvergiert gegen ein $\xi_0 \in X$, falls es für jede offene Umgebung $U$ von $\xi_0$ (also $U$ offen, $\xi_0 \in U$) ein $K = K(\xi_0, U) \in \mathbb{N}$ mit $\xi_k \in U\ \forall k \geq K$ gibt.
+
+\paragraph{Satz} Sei $X$ ein lokal kompakter (jeder Punkt liegt in einer kompakten Umgebung), metrischer Raum und $\mu$ ein reguläres Borelmaß (endliche Werte auf Kompakte)
+\begin{align*}
+\text{regulär von innen}&\colon \mu(A) = \sup \set{\mu(K) \Mid A \supset K\ kompakt}\\
+\text{regulär von außen}&\colon \mu(A) = \inf \set{\mu(U) \Mid A \subset U \mathit{offen}}
+\end{align*}
+Dann ist die Menge $C^0_c(X)$ aller stetigen Funktionen $X \rightarrow \mathbb{R}$ mit \textit{kompaktem Träger} dicht in $L^p(X, \mu),\ p \in [1, \infty)$. Hierbei wird für $f\colon X \rightarrow\mathbb{R}$
+\begin{align*}
+\text{supp} f \coloneqq \overline{\set{x \in X \Mid f(x) \not = 0}}
+\end{align*}
+als \textit{Träger} von $f$ bezeichnet.
+
+\paragraph{Definition} (Faltung)\\
+Für integrierbare $f, g\colon \mathbb{R}^n \rightarrow \mathbb{R}$ setzen wir:
+\begin{align*}
+(f * g)(x) = \int_{\mathbb{R}^n} f(x + y)g(y)\ \d\lambda^n(y) = \int_{\mathbb{R}^n} f(y)g(x  - y)\ \d\lambda^n(y)
+\end{align*}
+und bezeichnen den Ausdruck $f * g$ als \text{Faltung}. Die Faltung selbst ist integrierbar.
+
+\paragraph{Lemma} Die Faltung besitzt die folgenden Eigenschaften:
+\begin{enumerate}
+\item Für $x \in \mathbb{R}^n$ ist die Funktion $f(x  - \cdot)g(\cdot)$ genau dann integrierbar, wenn $f(\cdot)g(x - \cdot)$ integrierbar ist. In diesem Fall gilt 
+\begin{align*}
+(f * g)(x) = (g*f)(x)
+\end{align*}
+\item Für $\phi \in C^k_c(\mathbb{R}^n),\ k \in \mathbb{N}$ und $f \in L^1_{loc}(\mathbb{R}^n)$ (Menge aller lokal Lebesgue-Integrierbaren Funktionen) folgt $f * \phi \in C^k(\mathbb{R}^n)$ und 
+\begin{align*}
+\partial_\alpha (f * \phi) = (\partial_\alpha \phi) * f
+\end{align*}
+für jede partielle Ableitungen einer Ordnung $\leq k$. Dabei ist $\alpha$ ein sog. Multiindex.
+\item Für $\phi \in C^k_c (\mathbb{R}^n),\ k \in \mathbb{N},\ f \in L^1_c(\mathbb{R}^n)$ (d.\,h. es gibt einen Repräsentanten mit kompaktem Träger) ist
+\begin{align*}
+f * \phi \in C^k_c(\mathbb{R}^n)
+\end{align*}
+\item Für $\phi \in L^1(\mathbb{R}^n),\ f\in L^p(\mathbb{R}^n),\ p \in [1, \infty]$ gilt auch $f * \phi \in L^p(\mathbb{R}^n)$ und wir haben
+\begin{align*}
+\Vert f * \phi \Vert_{L^p} \leq \Vert \phi \Vert_{L^1} \Vert f \Vert_{L^p}\ \text{(Young-Ungleichung)}
+\end{align*}
+\end{enumerate}
+
+\paragraph{Definition} Eine Familie $(\phi_\varepsilon)_{\varepsilon > 0}$ integrierbarer Funktionen $\mathbb{R}^n \rightarrow \mathbb{R}$ heißt \textit{approximative Identität}, falls 
+\begin{enumerate}
+\item $\sup_{\varepsilon > 0} \Vert \phi_\varepsilon \Vert _{L^1}  < \infty$
+\item $\int_{\mathbb{R}^n} \phi_\varepsilon\ \d\lambda^n = 1\ \forall\varepsilon>0$
+\item$\int_{\mathbb{R}^n\setminus B_r(0)} \vert \phi_\varepsilon\vert\ \d\lambda^n \xrightarrow{\varepsilon\searrow 0} 0\ \forall r > 0$ 
+\end{enumerate}
+Ein \textit{Glättungskern} ist eine nicht-negative Funktion $\phi \in C^0_c(\mathbb{R}^n)$ mit $\Vert \phi \Vert_{L^1} = 1$.
+
+\paragraph{Bemerkung} Aus jedem Glättungskern erhält man durch
+\begin{align*}
+\phi_\varepsilon(x) = \varepsilon^{-n} \phi\left(\frac{x}{\varepsilon}\right),\ \phi \in C^0_c (\mathbb{R}^n)
+\end{align*}
+eine approximative Identität. Häufig zum Einsatz kommt der Standart-Glättungskern
+\begin{align*}
+x \mapsto \begin{cases}
+ \exp \left(\frac{1}{\vert x \vert ^2- 1}\right),&\ \text{falls } \vert x \vert < 1 \\ 0,&\ \text{falls } \vert x \vert \geq 1
+\end{cases}
+\end{align*}
+
+\paragraph{Bemerkung} Sei $(\phi_\varepsilon)_{\varepsilon > 0}$ eine Approximative Identität und $f \in L^p(\mathbb{R}^n),\ p \in [1, \infty)$. Dann gilt 
+\begin{align*}
+\Vert f * \phi_\varepsilon -f\Vert_{L^p } \xrightarrow{\vert y \vert \searrow 0} 0 
+\end{align*}
+
+\paragraph{Satz} Sei $\Omega \subset \mathbb{R}^n$ offen. Dann liegt die Menge $C^\infty_c (\Omega)$ aller kompakten Funktionen dicht in $L^p(\Omega)$ für $p \in [1, \infty)$.
+
+\section{Fouriertransformation}
+
+\subsection{Definition und Umkehrbarkeit auf $L^1$}
+
+\paragraph{Definition} (Fouriertransformation)\\
+Für $f \in L^1(\R^n)$ definieren wir
+\begin{align*}
+\widehat{f}(p) = \frac{1}{(2\pi)^{\frac{n}{2}}} \int_{\mathbb{R}^n} e^{-i \langle p, x \rangle} f(x)\ \d\lambda^n(x),\ p \in \mathbb{R}^n
+\end{align*}
+Offenbar ist $\mathscr{F}\colon f \mapsto \widehat{f}$ eine lineare Abbildung, die beschränkt ist. Eine lineare Abbildung $A$ zwischen normierten Räumen $X, Y,\ A\colon X \rightarrow Y$ heißt beschränkt, falls es eine Konstante $C>0$ mit $\Vert Ax \Vert_Y \leq C \cdot \Vert x \Vert_X\ \forall x \in X$ gibt. \\
+Im Folgenden ist $C^0_b(X) = C^0 \cap \mathscr{L}^\infty$ der Raum der stetigen und beschränkten Funktionen $X \rightarrow \mathbb{R},\ B\subset \mathbb{R}^n$.
+
+\paragraph{Lemma} Die Fouriertransformation $\mathscr{F}$ ist eine lineare beschränkte Abbildung \linebreak\mbox{$L^1(\mathbb{R}^n) \rightarrow C_b^0(\mathbb{R}^n)$} mit
+\begin{align*}
+\left\Vert \widehat{f} \right\Vert_{L^\infty} \leq \frac{1}{(2\pi)^{\frac{n}{2}}} \Vert f \Vert_{L^1}
+\end{align*}
+Ist $f$ nicht-negativ, so gilt Gleichheit.
+
+\paragraph{Lemma} Für $f, g \in L^1(\mathbb{R}^n),\ a, p \in \mathbb{R}^n,\ \lambda >0$ gilt:
+\begin{enumerate}
+\item$\widehat{f(\cdot + a)}(p) = e^{-i\langle a, p\rangle} \widehat{f}(p)$
+\item$\widehat{e^{-i\langle \cdot, p\rangle} f}(p) = \widehat{f}(p-a)$
+\item$\widehat{f(\lambda\cdot)}(p) = \frac{1}{\lambda^n} \widehat{f}(\frac{p}{\lambda})$
+\item$\widehat{f(-\cdot)}(p) = \widehat{f}(-p)$
+\item$\widehat{f}g, f\widehat{g} \in L^1$ mit $\int_{\mathbb{R}^n} \widehat{f}g\ \d\lambda^n = \int_{\mathbb{R}^n} f\widehat{g}\ \d\lambda^n$
+\end{enumerate}
+
+\paragraph{Lemma} Sei $f \in C^1(\mathbb{R}^n$ mit $\lim_{\vert x \vert \rightarrow \infty} f(x) = 0$ und $f, \partial_j f \in L^1(\mathbb{R}^n)$ für ein \mbox{$j \in \{1, \dotsc, n\}$}. Dann ist
+\begin{align*}
+\widehat{\partial_j f}(p) = ip_j \widehat{f}(p)\ \forall p \in \mathbb{R}^n.
+\end{align*}
+Sind umgekehrt $f$ und $(x \mapsto x_j f(x))$ in $L^1$, so ist $\widehat{f}$ nach $p_j$ differenzierbar und es gilt
+\begin{align*}
+\widehat{\cdot_j f}(p) = i\partial_j\widehat{f}(p)\ \forall p \in \mathbb{R}^n
+\end{align*}
+
+\paragraph{Bemerkung} Das soeben bewiesene Resultat überträgt sich induktiv auf höhere Ableitungen. Für $f \in C^k(\mathbb{R}^n),\ k \in \mathbb{N},\ \alpha \in (\mathbb{N} \cup \{ 0 \})^n,\ \vert \alpha \vert \leq k$ setzen wir
+\begin{align*}
+\partial_\alpha f \coloneqq \frac{\partial^{\abs{\alpha}}f}{\partial_{x_1}^{\alpha_1}\cdot \dotsc \cdot \partial_{x_n}^{\alpha^n}}
+\end{align*}
+wobei $x^\alpha \coloneqq x_1^{\alpha_1}\cdot \dotsc \cdot x_n^{\alpha_n},\ \abs{\alpha} = \alpha_1 + \dotsc + \alpha_n$ ist. $\alpha$ ist ein \textit{Multiindex}. Es gilt $(\lambda x)^\alpha = \lambda^{\abs{\alpha}}x^\alpha$.
+
+\paragraph{Definition} (Schwarz-Raum)\\
+Wir definieren
+\begin{align*}
+\mathscr{S}(\mathbb{R}^n) \coloneqq \set{f \in C^\infty(\mathbb{R}^n) \Mid \forall\alpha, \beta \in (\mathbb{N} \cup \set{0})^n : \sup_{x \in \mathbb{R}^n} \abs{x^\alpha(\partial_\beta f)(x)} < \infty}
+\end{align*}
+Die Elemente heißen \textit{Schwarz-Funktionen} beziehungsweise \textit{schnell-fallende Funktionen}.
+
+\paragraph{Bemerkung} Offenbar ist $\mathscr{S}(\mathbb{R}^n) \subset \mathscr{L}^p(\mathbb{R}^n)$ für $p \in [1, \infty]$ und wegen\linebreak \mbox{$C^\infty_c(\mathbb{R}^n) \subset \mathscr{S}(\R^n)$} (insbesondere $\mathscr{S}(\R^n) \not = \emptyset$) ist $\mathscr{S}(\R^n)$ für $p \in [1, \infty)$ sogar dicht in $L^p(\R^n)$.
+
+\paragraph{Lemma} Die Fouriertransformation $\mathscr{F}$ ist ein Operator $\mathscr{F}\colon \mathscr{S}(\R^n) \rightarrow \mathscr{S}(\R^n)$. Insbesondere gilt für jeden Multiindex $\alpha \in (\mathbb{N} \cup \set{0}),\ f \in \mathscr{S}(\R^n),\ p \in \R^n$:
+\begin{align*}
+\widehat{\partial_\alpha f}(p) = (ip)^\alpha \widehat{f}(p) \text{ und } \widehat{\cdot^\alpha f}(p) = i^{\abs{\alpha}}\partial_\alpha\widehat{f}(p)
+\end{align*}
+
+\paragraph{Komische Zwischenbemerkung} Das Abklingverhalten einer Funktion korrespondiert mit der Glattheit (Regularität) der Fourier-Transformierten. Insbesondere verschwindet die Fouriertransformierte einer integrierbaren Funktion im Unendlichen (nächstes Corollar).\\
+Den Raum aller stetigen Funktionen $f$, die $\lim_{\abs{x} \rightarrow \infty} f(x) = 0$ erfüllen, bezeichnen wir mit $C^0_0(\R^n)$
+
+\paragraph{Corollar} (Riemann-Lebesgue)\\
+Die Fouriertransformierte bildet $L^1(\R^n)$ auf $C^0_0(\R^n)$ ab.
+
+\paragraph{Satz} (Fourierinversion)\\
+Die Fouriertransformation ist eine (beschränkte, lineare) invertierbare Abbildung:
+\begin{align*}
+\mathscr{F}: L^1(\R^n) \rightarrow C^0_0(\R^n)
+\end{align*}
+Die Inverse ist durch
+\begin{align*}
+f(x) = \lim_{\varepsilon\rightarrow 0} \frac{1}{(2\pi)^\frac{n}{2}} \int_{\R^n} e^{ipx-\frac{\varepsilon^2\abs{p}^2}{2}}\widehat{f}(p)\ \d\lambda^n(p)
+\end{align*}
+gegeben, wobei der Grenzwert bezüglich der $L^1$-Norm zu verstehen ist.
+
+\paragraph{Corollar}  Für $f \in L^1(\R^n)$ mit $\widehat{f} \in L^1(\R^n))$ gilt $\check{(\widehat{f})} = f$, wobei $\check{f}(p) \coloneqq \widehat{f}(-p)$, also 
+\begin{align*}
+\check{f}(p) = \frac{1}{(2\pi)^{\frac{n}{2}}} \int_{\R^n} e^{ipx}f(x)\ \d\lambda^n(x)
+\end{align*}
+Insofern ist $\mathscr{F}$ eine Bijektion auf $F^1(\R^n) = \set{f \in L^1(\R^n) \Mid \widehat{f} \in L^1(\R^n)}$ und insbesondere ist $\mathscr{F}\left\vert_{\mathscr{S}(\R^n)}\right. \colon \mathscr{S}(\R^n) \rightarrow \mathscr{S}(\R^n)$ eine Bijektion.
+
+\paragraph{Lemma} (Plamcherel-Identität)\\
+Sei $f \in F^1(\R^n)$. Dann ist $f, \widehat{f} \in L^2(\R^n)$ und 
+\begin{align*}
+\norm{f}^2_{L^2} = \norm{\widehat{f}}^2_{L^2} \leq (2\pi)^{-\frac{n}{2}} \norm{f}_{L^1} \norm{\widehat{f}}_{L^1}
+\end{align*}
+
+\subsection{Fortsetzbarkeit auf $L^2$}
+
+\paragraph{Satz} (Fortsetzung linearer Abbildungen)\\
+Sei $X$ ein normierter Raum mit dichter Teilmenge $\mathscr{V}$, und $Y$ ein Banachraum.
+Ist $A\colon \mathscr{V} \rightarrow Y$ eine lineare und beschränkte Abbildung (es gibt ein $C_A > 0$ mit $\norm{Ax}_Y \leq C_A \norm{x}_X\ \forall x \in \mathscr{V}$), so gibt es genau eine Fortsetzung $\widetilde{A}$, also eine lineare und beschränkte Abbildung $\widetilde{A}\colon X \rightarrow Y,\ \widetilde{A}\left\vert_{\mathscr{V}}\right. = A$, die die Abschätzung mit derselben Konstante $C_A$ erfüllt.
+
+\paragraph{Satz} (Plancherel)\\
+Die Fouriertrandformation $\mathscr{F}$ lässt sich zu einer linearen und beschränkten Abbildung $\mathscr{F} \colon L^2(\R^n) \rightarrow L^2(\R^n)$ fortsetzen, die unitär ist, d. h.
+\begin{align*}
+\langle\widetilde{\mathscr{F}}(f), \widetilde{\mathscr{F}}(g)\rangle_{L^2} = \langle f, g\rangle_{L^2}\ \forall f, g \in L^2(\R^n)
+\end{align*}
+
+\paragraph{Bemerkung} Solange der Integrand von $\widehat{f}$ in $L^1(\R^n)$ liegt, lässt sich $\widetilde{\mathscr{F}}(f)$ direkt mit der Formel aus vorheriger Definition berechnen. In der Regel lässt sich $\widetilde{\mathscr{F}}$ für $f \in L^2(\R^n)$ nur als Grenzwert einer Folge $\widehat{f_k},\ (f_k)_{k\in \mathbb{N}} \subset \mathscr{S}(\R^n),\ f_k \xrightarrow[\text{in }L^2]{k\rightarrow \infty} f$ darstellen.
+
+\paragraph{Lemma} Wir haben $\norm{\widetilde{\mathscr{F}}(f)}_{L^\infty} \leq (2\pi)^{-\frac{n}{2}} \norm{f}_{L^1}\ \forall f \in L^1 \cap L^2$.
+
+\section{Differenzierbare Mannigfaltigkeiten}
+
+\subsection{Implizite Funktionen und Untermannigfaltigkeiten}
+
+\paragraph{Definition}
+\begin{enumerate}
+\item Seien $X, Y$ topologische Räume. Eine stetige Abbildung $f\colon X \rightarrow Y$ die bijektiv ist und deren Inverse ebenfalls stetig ist, heißt \textit{Homöomorphismus}
+\item Seien $X, Y$ topologische Räume. Ein Homöomorphimsus $F\colon X \rightarrow Y$ heißt \textit{($C^1$-)Diffeomorphismus}, wenn $f \in C^1(X, Y),\ f^{-1} \in C^1(Y, X)$. (Entsprechend für $C^k$).
+\end{enumerate}
+
+\paragraph{Satz} (Umkehrsatz)\\
+Sei $\Omega \subset C^1(\R^n)$ eine nichtleere, offene Menge und $f \in C^1(\Omega, \R^n)$. Dann ist die Invertierbartkeit der Jacobimatrix $Df(\xi)$ in $\xi \in \Omega$ äquivalent zur Existenz einer lokalen $C^1$-Umkehrfunktion von f in einer Umgebung $f(\xi)$. Genauer gibt es eine offene Teilmenge $\mathcal{V} \subset \Omega,\ \mathcal{W} \subset \R^n$ mit $\xi \in \mathcal{V}$ und $F(\xi) \in \mathcal{W},\ \mathcal{W} \subset \im f$, sodass $f\mid_\mathcal{V}$ ein Diffeomorphismus $\mathcal{V} \rightarrow \mathcal{W}$ ist. Insbesondere gilt
+\begin{align*}
+(D((f\mid_\mathcal{V})^{-1}))(f(x)) = (Df(x))^{-1}\ \forall x \in \mathcal{V}
+\end{align*}
+
+\paragraph{Corollar} (Globaler Umkehrsatz)\\
+Sei $\Omega \subset \R^n$ offen und nichtleer, $f \in C^1 (\Omega, \R^n)$. Ist die Jacobi-Matrix $Df(x)$ für alle $x \in \Omega$ invertierbar und $f$ injektiv, so liefert $f$ einen Diffeomorphismus $\Omega \rightarrow \mathcal{W} \coloneqq \im f$. Insbesondere ist $\mathcal{W}$ offen und der vorherige Satz gilt für alle $x \in \Omega$.
+
+\paragraph{Satz} (implizite Funktion)\\
+Seien $k, m \in \mathbb{N},\ \Omega \subset \R^{k+m}$ eine offene Menge und $f \in C^1(\Omega, \R^m)$. Es gebe ein \mbox{$(\xi, \nu) \in \Omega$} mit $f(\xi, \nu) = 0$ und $\det D_yf(\xi, \nu) \not = 0$, wobei $D_yf(x, y) = \left(\frac{\partial f_j}{\partial y_l}(x, y)\right)_{j, l = 1, \dotsc, m}$. Dann gibt es eine offene Umgebung $U \subset \R^k$ von $\xi$ und $V \subset \R^m$ von $\nu$ und ein $\phi \in C^1(U, V)$ mit 
+\begin{align*}
+&\set{(x, y) \in U \times V \Mid f(x, y) = 0} = \set{(x, \phi(x)) \Mid x \in U}\\
+&D\phi(x) = -(D_yf(x, \phi(x)))^{-1} D_xf(x, \phi(x))\ \forall x \in U
+\end{align*}
+
+\paragraph{Definition} (Immersion)\\
+Sei $\Omega \subset \R^n$ nichtleer und offen, $\phi \in C^1(\Omega, \R^m),\ m \geq n$. Die Abbildung $\phi$ heißt \textit{Immersion}, falls der Rang von $D\phi(x)\ \forall x \in \Omega$ stets maximal ist (also gleich $n$).
+
+\paragraph{Definition} (Untermannigfaltigkeit)\\
+Seien $m, n \in (\mathbb{N} \cup \set{0}),\ m \leq n$. Eine $C^1$-Untermannigfaltigkeit des $\R^n$ mit Dimension $m$ (kurz Mannigfaltigkeit) ist eine nichtleere Menge $M \subset \R^n$ (Notation $M^m$) mit der folgenden Eigenschaft:\\
+Für jedes $\xi \in M$ existiert eine offene Umgebung $\Omega \subset \R^n,\ \xi \in \Omega$, eine (offene) Menge $U \subset \R^m$ und eine Immersion $\phi \in C^1(U, \R^n)$, die $U$ homöomorph auf $\im \phi  = M \cap \Omega$ abbildet.\\
+Die Abbildung $\phi$ heißt (lokale) Parametrisierung von $M$ um $\xi$, ihre Umkehrung $\phi^{-1}\colon M \cap \Omega \rightarrow U$ bzw. das Paar $(\phi^{-1}, U)$ heißt \textit{Karte} und eine Familie von Karten, deren Urbilder ganz $M$ überdecken, bilden einen \textit{Atlas}.
+
+\paragraph{Bemerkung} Die Dimension einer Mannigfaltigkeit ist wohldefiniert. Eine nichtleere Teilmenge des $\R^n$ ist genau dann eine $n$-dimensionale Mannigfaltigkeit, wenn sie offen ist.
+
+\paragraph{Satz} Für $m, n \in \mathbb{N},\ m \geq n$ und eine nichtleere Menge $M \in \R^n$ sind die folgenden Aussagen äquivalent:
+\begin{enumerate}
+\item (Untermannigfaltigkeit)\\
+Für jedes $\xi \in M$ gibt es eine offene Umgebung $\Omega \in \R^n$ von $\xi$, eine Menge ${U \subset \R^m}$ und eine Immersion $\phi \in C^1((U, \R^n)$, die $U$ homöomorph auf ${M \cap \Omega = \phi(U)}$ abbildet.
+\item (Gleichheitsdefinierte Mannigfaltigkeit)\\
+Zu jedem $\xi \in M$ gibt es eine offene Umgebung $\Omega \subset \R^n$ von $\xi$ und eine Abbildung $f \in C^1(\Omega, \R^{n-m})$ mit $\operatorname{Rang} (Df(x)) = n - m \ \forall x \in \Omega$ und ${M\cap \Omega = f^{-1}(\set{0_{\R^{n-m}}})}$. 
+\item (Graphendarstellung)\\
+Zu jedem $\xi \in M$ gibt es eine offene Umgebung $\Omega \subset \R^n$ von $\xi$, eine offene Menge $U \subset \R^m$ und ein $g \in C^1(U, \R^{n-m})$ mit ${M\cap \Omega = \Pi(\operatorname{Graph} g)}$, wobei $\Pi \in GL(n)$ eine Permutationsmatrix ist.
+\end{enumerate}
+Eine  Permitationsmatrix $\Pi$ ist durch einen Zykel $\sigma \in \mathfrak{S}_n$ eindeutig charakterisiert und es gilt $\Pi (e_j) = e_{\sigma(j)}$ für $j = 1, \dotsc, n$.
+
+\paragraph{Definition} (Tangential-/Normalraum)\\
+Sei $M \subset \R^n$ eine $m$-dimensionale Mannigfaltigkeit und $\xi \in M$. Ein Vektor $v \in \R^n$ heißt \textit{Tangentialvektor an $M$ im Punkt $\xi$}, falls es eine Kurve $\gamma \in C^1((-\epsilon, \epsilon), M),\ {\epsilon > 0}$, mit $\gamma(0) = \xi,\ \gamma'(0) = v$ gibt.
+Die Menge aller Tangentialvektoren bezeichnen wird \textit{Tangentialraum an $M$ im Punkt $\xi$} genannt und mit $T_\xi M$ bezeichnet.\\
+Der \textit{Normalraum an $M$ in $\xi$} ist das orthogonale Komplement $N_\xi M = (T_\xi M)^\perp$.
+
+\paragraph{Satz} Sei $M \subset \R^n$ eine $m$-dimensionale Mannigfaltigkeit, $\xi \in M,\ m \leq n$. Sei $\phi \in C^1(U, \R^n)$ eine lokale Parametrisierung von $M$ um $\xi$ mit $\phi(0) = \xi$ und sei f wie im vorigen Satz (ii). Dann gilt
+\begin{align*}
+T_\xi M &= \operatorname{Bild} D\phi(0) &&= \ker Df(\xi) \\
+N_\xi M &= (\operatorname{Bild} D\phi(0))^\perp &&= \operatorname{span}(\nabla f_1(\xi), \dotsc, \nabla f_{n- m}(\xi))
+\end{align*}
+Insbesondere ist $T_\xi M$ wirklich ein Vektorraum und wir haben 
+\begin{align*}
+\dim T_\xi M = m,\quad \dim N\xi M = n-m
+\end{align*}
+
+\paragraph{Satz} (Tangentialebene)\\
+Für jeden Punkt $\xi$ einer Mannigfaltigkeit $M$ ist mit $\Xi = \xi + T_\xi M$
+\begin{align*}
+\frac{1}{r}\sup\set{\operatorname{dist}(x, \Xi) \Mid x \in M\cap B_r(\xi)} \xrightarrow{r \searrow 0} 0
+\end{align*}
+
+\subsection{Integration einer Mannigfaltigkeit}
+
+\paragraph{Ziel} Verallgemeinerung des Lebesgue Integrals.
+
+\paragraph{Zunächst:} Für eine lineare Abbildung $T \colon \R^m \rightarrow \R^n,\ n \geq m$, und eine messbare Menge $U \subset \R^m$ möchten wir den $m$-dimensionalen Flächeninhalt von $T(U)$ angeben.
+
+\paragraph{Lemma} Sei $T \in \R^{n \times m}$ mit $\operatorname{Rang} m,\ n \geq m$. Dann gibt es ein $Q \in R^{n \times m}$ und $S \in R^{m \times m}$ mit $T = QS$, wobei $Q$ eine Isometrie ist, d. h. $\abs{Qv}_{\R^n} = \abs{v}_{\R^m}\ \forall v \in \R^m$ und $\abs{\det S} = \sqrt{\det T^\top T}$.
+
+\paragraph{Definition} (Integral auf lokaler Parametrisierung)\\
+Seien $m, n \in \mathbb{N},\ m \leq n,\ U \subset \R^m$ offen, $\phi \in C^1(U, \R^n)$ eine Immersion, die $U$ hohöomorph auf $\operatorname{Bild} \phi$ abbildet. Dann definieren wir den mehrdimensionalen Flächeninhalt von $\operatorname{Bild} \phi$ durch
+\begin{align*}
+\operatorname{vol}^m(\operatorname{Bild} \phi) = \int_U \sqrt{\det((D\phi)^\top(D\phi))}\ \d\lambda^m
+\end{align*}
+wobei $\det ((D\phi)^\top(D\phi))$ mit \textit{Gram-Determinante} bezeichnet wird.\\
+ Eine Funktion $f\colon \operatorname{Bild} \phi \rightarrow \R$ heißt integrierbar, falls
+ \begin{align*}
+ (f \circ \phi)\sqrt{\det((D\phi)^\top(D\phi))}
+ \end{align*}
+ auf $U$ integrierbar ist. Das $m$-dimensionale Flächenintegral auf $\operatorname{Bild}\phi$ ist durch 
+ \begin{align*}
+ \int_{\operatorname{Bild} \phi} f\ \d A^m = \int_U (f \circ \phi)\sqrt{\det((D\phi)^\top(D\phi))}\ \d\lambda^m
+ \end{align*}
+ gegeben. Entsprechend sind die Räume $L^p(\operatorname{Bild}\phi)$ erklärt.
+ Im Fall $n = m$ ergibt sich mit $\phi = \operatorname{id}$:
+ \begin{align*}
+ \int_U f\ \d A^n = \int_U f\ \d\lambda^n
+ \end{align*}
+ 
+ \paragraph{Lemma} (Wohldefiniertheit des Flächeninhalts)\\
+ Seien $n, m \in \mathbb{N},\ m \leq n,\ U_1, U_2 \subset \R^m$ offen und $\varphi_1 \in C^1(U_1, \R^n), \varphi_2 \in C^1(U_2, \R^n)$ Immersionen, die $U_1$ und $U_2$ homöomorph auf eine Menge $W\subset \R^n$ abbilden. Sei weiterhin $f\colon W \rightarrow W$ messbar. Dann ist $(f \circ \varphi_1)\sqrt{\det((D\varphi_1)^\top(D\varphi_1))}$ gebau dann integrierbar, wenn $(f \circ \varphi_2)\sqrt{\det((D\varphi_2)^\top(D\varphi_2))}$ integrierbar ist und wir haben
+ \begin{align*}
+ \int_{U_1} (f \circ \varphi_1)\sqrt{\det((D\varphi_1)^\top(D\varphi_1))}\ \d\lambda^m = \int_{U_2} (f \circ \varphi_2)\sqrt{\det((D\varphi_2)^\top(D\varphi_2))}\ \d\lambda^m
+ \end{align*}
+ 
+ \paragraph{Definition} (Partition der Eins)\\
+ Gegeben sei eine Überdeckung der Mannigfaltigkeit $M \subset \R^n$ durch die Mengen $W_1, \dotsc, W_l$, d. h. $M = \bigcup_{j = 1}^l W_j$. Eine Familie $(\alpha_j)_{j = 1, \dotsc, l}$ messbarer Funktionen $M \rightarrow \R$ heißt eine der Überdeckung $(W_j)_{j = 1, \dotsc, l}$ untergeordnete Partition der Eins, wenn
+ \begin{enumerate}
+ \item$\operatorname{Bild}\alpha_j \subset [0, 1]$ für $j = 1, \dotsc, l$
+ \item$\alpha_j = 0$ auf $M\setminus W_j$ für $j = 1, \dotsc, l$
+ \item$\sum_{j = 1}^l \alpha_j = 1$ auf $M$
+ \end{enumerate}
+ Für einen endlichen Atlas $(\varphi_j^{-1})\colon W_j \rightarrow U_j)_{j = 1, \dotsc, l}$ einer Mannigfaltigkeit $M$ konstruieren wir eine der Überdeckung $(W_j)_{j = 1, \dotsc, l}$ untergeordnete Partition der Eins $(\alpha_j)_{j = 1, \dotsc, l}$, sodass $\alpha_j \circ \varphi_j$ jeweils messbar sind, durch $\alpha_1 = \chi_{W_1}, \alpha_2 = \chi_{W_1\setminus W_2}, \dotsc, {\alpha_j = \chi_{W_j \setminus (W_1\cup\dotsc \cup W_{j-1})}}$. Dann ist $\alpha_j \circ \varphi_j = \chi_{U_j\setminus \varphi^{-1}(W_1\cup\dotsc\cup W_{j-1})}$.
+ 
+ \paragraph{Definition} (Integral auf Mannigfaltigkeit)\\
+ Sei $M \subset \R^n$ eine $m$-dimensionale Mannigfaltigkeit mit einem Atlas ${(\varphi^{-1}\colon W_j \rightarrow U_j)_{j = 1, \dotsc, l}}$. Eine Funktion $f\colon M \rightarrow \R$ heißt integrierbar, wenn $f \cdot \chi_{W_j}\ \forall j = 1, \dotsc, l$ integrierbar ist. Ist $(\alpha_j)_{j = 1, \dotsc, l}$ eine der Überdeckung $(W_j)_{j = 1, \dotsc, l}$ untergeordnete Partition der Eins und $\alpha_j \circ \varphi_j$ messbar für alle $j = 1, \dotsc, l$, so definieren wir das Integral von $f$ über $M$ durch
+ \begin{align*}
+ \int_M f\ \d A^m &= \sum_{j = 1}^l \int_M \alpha_j f\ \d A^m\\
+ &= \sum_{j = 1}^l \int_{U_j} \underbrace{(\alpha_j \circ \varphi_j)(f \circ \varphi_j)}_{= (\alpha_j f)\circ \varphi_j}\sqrt{\det((D\varphi_j)^\top(D\varphi_j)}\ \d\lambda^m
+ \end{align*}
+ Entsprechend sind die Räume $L^p(M)$ erklärt.
+
+\paragraph{Lemma} Das Integral auf einer Mannigfaltigkeit ist wohldefiniert und hängt insbesondere nicht vom gewählten Atlas ab.
+
+\paragraph{Definition} Sei $M \subset \R^n$ eine $m$-dimensionale Mannigfaltigkeit mit endlichem Atlas. Ist $S \subset \R^n$ eine Teilmenge und ist $\chi_S$ integrierbar im Sinne vorheriger Definition, so nennen wir $S$ integrierbar und definieren den $m$-dimensionalen Flächeninhalt vom $S$ durch $\operatorname{vol}^m(S) = \int_M \chi_S\ \d A^m$. Im Fall $\operatorname{vol}^m(S) = 0$ sprechen wir von einer $m$-dimensionalen Nullmenge. Eine Funktion $f\colon S \rightarrow \R$ heißt über $S$ integrierbar, falls $f\chi_S$ im Sinne vorheriger Definition integrierbar ist. Wir setzen 
+\begin{align*}
+\int_S f\ \d A^m = \int_M f\chi_S\ \d A^m
+\end{align*}
+Entsprechend sind Räume $L^p(S)$ erklärt. Ist $S$ in $M$ offen, d. h. selbst eine Mannigfaltigkeit, so stimmt letztere Definition mit voriger überein.
+
+\subsection{Orientierung}
+
+\paragraph{Erinnerung} Zwei Basen eines Vektorraumes Heißen gleichorientiert, wenn die Basiswechselmatrix eine positive Determinante besitzt
+
+\paragraph{Definition} Sei $M$ eine $m$-dimensionale Mannigfaltigkeit im $\R^n,\ 1\leq m\leq n$.
+\begin{enumerate}
+\item Zwei Karten $\phi^{-1}_1\colon W_1 \rightarrow U_1, \phi^{-1}_2\colon W_2 \rightarrow U_2$ heißen \textit{gleichorientiert}, wenn für $W_1 \cap W_2 \neq \emptyset$ der Kartenwechsel 
+\begin{align*}
+\psi \coloneqq \phi_2^{-1} \circ \phi_1 \colon \phi_1^{-1}(W_1\cap W_2) \rightarrow \phi_2^{-1}(W_1\cap W_2)
+\end{align*}
+die Eigenschaft $\det D\psi > 0$ auf $\phi_1^{-1}(W_1 \cap W_2)$ besitzt. In diesem Fall nennen wir $\psi$ \textit{orientierungstreu}.
+\item $M$ heißt \textit{orientierbar}, wenn es einen Atlas aus gleichorientierten Karten gibt und dieser heißt dann \textit{orientiert}.
+\end{enumerate}
+
+\paragraph{Bemerkung}
+\begin{enumerate}
+\item Sei $\mathcal{A}$ ein orientierbarer Atlas. Sind (nicht zu $\mathcal{A}$ gehörende Karten $\phi^{-1}_1\colon W_1 \rightarrow U_1, \phi^{-1}_2\colon W_2 \rightarrow U_2$ jeweils gleichorientiert zu allen Karten aus $\mathcal{A}$, so sind auch $\phi_1^{-1}, \phi_2^{-1}$ gleichorientiert und $\mathcal{A} \cup \set{\phi_1^{-1}, \phi_2^{-1}}$ ist ebenfalls ein orientierter Atlas.
+\item Eine Orientierung auf $M$ induziert ebenfalls eine Orientierung der Tangentialräume $T_p M$: Ist $M$ durch einen Atlas $\mathcal{A}$ orientiert und $\phi^{-1}\colon W \rightarrow U$ eine Karte aus $\mathcal{A}$ mit $\phi(u) = p$, so legt ${(\frac{\partial \phi}{\partial x_1}(u), \dotsc, \frac{\partial \phi}{\partial x_m}(u))}$ eine Orientierung des Tangentialraums fest und diese ist unabhängig von der speziellen Wahl von $\phi$. Weil zwei nicht gleichorientierte Karten an (mindestens) einem Punkt unterschiedliche Orientierungen von $T_p M$ induzieren, ist die Orientierung von $M$ eindeutig durch die induzierten Orientierungen der Tangentialräume gegeben.
+\end{enumerate}
+
+\paragraph{Satz} Eine Hyperfläche im $\R^n$, d. h. eine $(n - 1)$-dimensionale Mannigfaltigkeit im $\R^n$ ist genau dann orientierbar, wenn es auf $M$ ein stetiges Normalenfeld gibt, d. h. eine stetige Abbildung $\nu\colon M \rightarrow \mathbb{S}^{n-1}$ mit $\nu(p) \in N_p M\ \forall p \in M$.
+
+\subsection{Glatte Ränder}
+
+\paragraph{Definition} (Relativtopologie und Rand)\\
+Sei $(X, \mathcal{O})$ ein topologischer Raum, $Y \subset X$ eine nichtleere Teilmenge von $X$. Wir bezeichnen
+\begin{align*}
+\mathcal{O} \cap Y \coloneqq \set{U\cap Y \Mid U \in \mathcal{O}}
+\end{align*}
+als \textit{Relativtopologie} von $Y$ bezüglich $X$.
+Der Rand $\partial Y$ ist die Menge aller Punkte $x \in X$, für die jedes $U \in \mathcal{O}$ mit $x \in U$ Punkte aus $Y$ und $Y^\mathrm{C}$ enthält. Insbesondere ist $(Y, \mathcal{O} \cap Y)$ wieder ein topologischer Raum. 
+
+\paragraph{Definition} (Glatte Ränder und adaptierte Karten)\\
+Sei $M \in \R^n$ eine $m$-dimensionale Mannigfaltigkeit und $\Omega \subset M$. Wir sagen $\Omega$ hat einen \textit{glatten Rand}, falls es für jedes $p \in \partial\Omega$ eine Karte $\phi^{-1}\colon W \rightarrow U$ mit $p \in W$ und $\phi(U \cap \set{x_1 \leq 0}) = \Omega \cap W$ sowie $\phi (U \cap \set{x_1 = 0}) = \partial \Omega \cap W$ gibt. Eine solche Karte $\phi^{-1}$ heißt $\Omega$\textit{-adaptiert}. Eine Atlas heißt $\Omega$\textit{-adaptiert}, falls sämtliche seiner Karten deren Definitionsbereich $\partial\Omega$ schneidet, $\Omega$-adaptiert sind.
+
+\paragraph{Lemma} Sei $M$ eine $m$-dimensionale Mannigfaltigkeit im $\R^n$, $\Omega \subset M$ eine Teilmenge mit glattem Rand. Dann gibt es einen $\Omega$-adaptierten Atlas. Ist $M$ orientiert und $m \geq 2$, so kann man erreichen, dass dieser Atlas orientiert ist.
+
+\paragraph{Satz} (Ränder als Mannigfaltigkeiten)\\
+Sei $M$ eine $m$-dimensionale Mannigfaltigkeit im $\R^n$, $m, n \in \mathbb{N},\ m \leq n$. Ist $\Omega \subset M$ eine Teilmenge mit glattem Rand, so ist $\partial M$ eine $(m - 1)$-dimensionale Mannigfaltigkeit im $\R^n$. Ist $M$ orientierbar, so ist auch $\partial M$ orientierbar.
+
+\section{Differentialformen und der Satz von Stokes}
+
+\subsection{Multilineare Algebra}
+
+\paragraph{Definition} ($k$-Formen)\\
+Eine (alternierende) $k$-Form auf einem $n$-dimensionalem, reellem Vektorraum ist eine (in jedem Argument) lineare Abbildung $\omega\colon V^k \rightarrow \R$, die bei der Vertauschung zweier Einträge das Vorzeichen wechselt. Der Vektorraum der $k$-Formen wird mit $\operatorname{Alt}^k V$ bezeichnet, $k \in \mathbb{N}$ und wir setzen $\operatorname{Alt}^0 V = \R$.
+
+\paragraph{Bemerkung} Für eine lineare Abbildung $\omega\colon V^k \rightarrow \R$ ist äquivalent:
+\begin{enumerate}
+\item $\omega$ wechselt beim vertauschen zweier Einträge das Vorzeichen
+\begin{align*}
+\omega(v_1, \dotsc, v_l, v_j, \dotsc, v_k) = -\omega(v_1, \dotsc, v_j, v_l, \dotsc, v_k)
+\end{align*}
+\item $\omega$ verschwindet, wenn zwei Einträge gleich sind
+\item $\omega$ verschwindet, wenn die Einträge linear abhängig sind
+\item Für eine Permutation $\pi \in \mathfrak{S}_k$ auf $\set{1, \dotsc, k}$ gilt
+\begin{align*}
+\omega(v_1, \dotsc, v_k) = (\operatorname{sign} \pi)\omega(v_{\pi(1)}, \dotsc, v_{\pi(k)})
+\end{align*}
+\end{enumerate}
+
+\paragraph{Definition} (Äußeres Produkt)\\
+Zu $\omega \in \operatorname{Alt}^k V$ und $\eta \in \operatorname{Alt}^l V$, $k, l \in \mathbb{N}$, definieren wir das äußere Produkt (Dachprodukt) $\omega \wedge \eta \in \operatorname{Alt}^{k + l} V$ durch
+\begin{align*}
+(\omega \wedge \eta)(v_1, \dotsc, v_{k+l}) = \frac{1}{k! l!} \sum_{\pi \in\mathfrak{S}_{k+l}} (\operatorname{sign}\pi)\omega(v_{\pi(1)}, \dotsc, v_{\pi(k)})\eta(v_{\pi(k+1)}, \dotsc, v_{\pi(k+l)})
+\end{align*}
+
+\paragraph{Lemma} Das äußere Produkt $\wedge\colon \operatorname{Alt}^k V \times \operatorname{Alt}^l V \rightarrow \operatorname{Alt}^{k+l} V$ ist bilinear, assoziativ und antikommutativ. Das heißt $\eta \wedge \omega = (-1)^{kl}(\omega \wedge \eta)$.
+
+\paragraph{Bemerkung} Für $\omega_j \in \operatorname{Alt}^{k_j} V,\ j = 1, \dotsc, n$ ist
+\begin{align*}
+(\omega_1\wedge \dotsc\wedge \omega_n)(v_1, \dotsc, v_n) = \sum_{\pi \in \mathfrak{S}_{k_1+\dotsc +k_n}} \frac{\operatorname{sign}\pi}{k_1!\dotsc k_n!} \prod_{j=1}^n \omega_j (v_{ \pi(k_1+\dotsc +k_{j-1}+1)}, \dotsc, v_{\pi(k_1+\dotsc+k_j)})
+\end{align*}
+Damit ist für $k_1 = \dotsc = k_n = 1,\ \omega_1, \dotsc, \omega_n \in \operatorname{Alt}^1 V = V,\ v_1, \dotsc, v_n \in V$
+\begin{align*}
+(\omega_1\wedge\dotsc\wedge\omega_n)(v_1, \dotsc, v_n) = \det ((\omega_j(v_l))_{j, l = 1, \dotsc, n})
+\end{align*}
+
+\paragraph{Satz} Für eine Basis $(\delta_1, \dotsc, \delta_n)$ des Dualraums $V'$ ist ${(\delta_1\wedge\dotsc\wedge\delta_k \mid 1\leq j_1\leq\dotsc\leq j_k \leq n)}$ eine Basis des $\operatorname{Alt}^k V$. 
+Ist $(e_1, \dotsc, e_n)$ die zu $(\delta_1, \dotsc, \delta_n)$ duale Basis von $V$, so haben wir $\omega = \sum_{j_1\leq \dotsc\leq j_k} a_{j_1, \dotsc, j_k} \delta_{j_1}\wedge\dotsc\wedge\delta_{j_k}$ mit $a_{j_1, \dotsc, j_k} = \omega(e_{j_1}, \dotsc, e_{j_k})\in \R$. 
+Mithin ist $\dim\operatorname{Alt}^k V = \binom{n}{k}$, insbesondere $\operatorname{Alt}^k V = 0$ für $k > n$.
+
+\paragraph{Definition} Für lineare Abbildungen $f\colon V \rightarrow W$ zwischen endlich-dimensionalen Vektorräumen und $\omega \in \operatorname{Alt}^k W$ erhalten wir durch 
+\begin{align*}
+(f^\ast\omega)(v_1, \dotsc, v_k) = \omega(f(v_1), \dotsc, f(v_k))
+\end{align*}
+die \textit{zurückgeholte Form} $f^\ast\omega \in \operatorname{Alt}^k V$. Dabei ist $f^\ast\colon \operatorname{Alt}^k W \rightarrow \operatorname{Alt}^k V$.
+
+\paragraph{Lemma} Für eine lineare Abbildung $f\colon V \rightarrow W$ zwischen zwei endlich-dimensoinalen reellen Vektorräumen und $\omega\in \operatorname{Alt}^k W,\ \eta \in \operatorname{Alt}^l W$ gilt
+\begin{align*}
+f^\ast(\omega\wedge\eta) = (f^\ast\omega)\wedge(f^\ast\eta)
+\end{align*}
+
+\paragraph{Lemma} Ist $V$ ein endlich-dimensionaler, reeller Vektorraum, $f\colon V \rightarrow V$ linear und $\omega \in \operatorname{Alt}^k V,\ n = \dim V$, so erhalten wir $(f^\ast\omega) = (\det f)\omega$
+
+\subsection{Differentialformen}
+
+\paragraph{Definition} (Differentialform)\\
+Eine Differentialform der Ordnung $k,\ k \in\mathbb{N} \cup \set{0}$, auf einer offenen Menge $\Omega \subset \R^n$ ist eine Abbildung $\omega\colon \Omega \rightarrow \operatorname{Alt}^k \R^n$.
+
+\paragraph{Bemerkung} Jede Differentialform der Ordnung $k$ lässt sich eindeutig durch 
+\begin{align*}
+\omega = \sum_{1 \leq j_1 \leq \dotsc \leq j_k \leq n} a_{j_1, \dotsc, j_k} \d x_{j_1}\wedge\dotsc\wedge\d x_{j_k}
+\end{align*}
+darstellen, wobei $a_{j_1, \dotsc, j_k} = \omega(e_{j_1}, \dotsc, \omega_{j_k})$ ist. Für $f \in C^1(\Omega)$ haben wir 
+\begin{align*}
+\d f(x) = \sum_{j=1}^n \frac{\partial f}{\partial x_j}(x) \d x_j
+\end{align*}
+
+\paragraph{Definition} (Zurückgeholte Form)\\
+Für offene Mengen $\Omega_1 \subset \R^m,\ \Omega_2 \subset \R^n,\ f \in C^1(\Omega_1, \Omega_2)$ und eine Differentialform $\omega$ der Ordnung $k$ auf $\Omega_2$ ist die auf $\Omega_1$ \textit{zurückgeholte Form} $f^\ast\omega$ durch 
+\begin{align*}
+(f^\ast\omega)(x)(v_1, \dotsc, v_k)=\omega(f(x))(\d f(x)v_1, \dotsc, \d f(x)v_k)
+\end{align*}
+erklärt.
+
+\paragraph{Satz} (Äußere Ableitung)\\
+Für $k\in \mathbb{N}\cup\set{0}$ gibt es genau eine Abbildung $\d$ von der Menge der differenzierbaren Funktionen nach $\operatorname{Alt}^{k+1} \R^n$, die
+\begin{enumerate}
+\item linear ist
+\item im Fall $k=0$, für eine differenzierbare Abbildung $f\colon \Omega \rightarrow \R$, das differential $\d f$ liefert
+\item für jede differenzierbare Differentialform $\omega$ der Ordnung $k$ und eine differenzierbare Differentialform $\eta$ der Ordnung $0$ die Produktregel
+\begin{align*}
+\d (\omega\wedge\eta) = (\d \omega) \wedge\eta + (-1)^k\omega\wedge(\d \eta)
+\end{align*}
+erfüllt und
+\item für $\omega \in C^2(\Omega, \operatorname{Alt}^k \R^n)$ der \textit{Exaktheitsbedingung} $\d\d \omega = 0$ genügt.
+\end{enumerate}
+Ist $\omega = \sum_{j_1 <\dotsc < j_k} a_{j_1, \dotsc, j_k}\d x_{j_1}\wedge\dotsc\wedge\d x_{j_k}$, so erhalten wir 
+\begin{align*}
+\d\omega = \sum_{j_1 < \dotsc < j_k}\d a_{j_1, \dotsc, j_k} \wedge\d x_{j_1}\wedge\dotsc\wedge\d x_{j_k}
+\end{align*}
+
+\paragraph{Definition} Für eine differenzierbare Differentialform $\omega$ wird $\d$ die \textit{äußere Ableitung, Cartan Ableitung} oder \textit{Differential} gennant.
+
+\paragraph{Satz} Für offene Mengen $\Omega_1\subset \R^n,\ f\in C^2(\Omega_1, \Omega_2)$ und eine differezierbare Differentialform auf $\Omega_2$ ist auch die auf $\Omega_1$ zurückgeholte Form $f^\ast\omega$ differenzierbar und es gilt $\d (f^\ast\omega)=f^\ast(\d \omega)$.
+
+\subsection{Integration von Differentialformen}
+
+\paragraph{Definition} Sei $\Omega\subset \R^n$ offen. Eine Differetialform $\omega= f\d x_1\wedge\dotsc\wedge\d x_n$ heißt integrierbar über $A\subset\Omega$, falls $f$ über $A$ integrierbar ist. Wir setzen
+\begin{align*}
+\int_A \omega = \int_A f\ \d\lambda^n
+\end{align*}
+
+\paragraph{Satz} (Transformationsformel)\\
+Sind $U, V\subset \R^n$ offen, $\phi\colon V \rightarrow U\ $ ein orientierungtreuer $C^1$-Diffeomorphismus und $\omega$ eine integrierbare Differetialform der Ordnung $n$ auf $U$, so gilt
+\begin{align*}
+\int_V \phi^\ast\omega = \int_U \omega
+\end{align*}
+Im Allgemeinen Fall $k \in \set{1, \dotsc, n}$ definieren wir Integrale zunächst über Parametrisierung.
+
+\paragraph{Definition} Sei $\Omega\subset\R^n$ und $M\subset\Omega$ eine $k$-dimensionale orientierte Mannigfaltigkeit, sowie $\phi^{-1}\colon W \rightarrow U$ eine Karte eines orientierten Atlanten. Dann ist eine auf $M\setminus W$ verschwindende, integrierbare Differentialform $\phi^\ast\omega$ auf $U$ im vorigen Sinne Integrierbar und wir setzen
+\begin{align*}
+\int_M \omega = \int_U \phi^\ast\omega
+\end{align*}
+
+\paragraph{Definition} Sei $\Omega\subset\R^n$ offen, $M\subset\Omega$ eine $k$-dimensionale Mannigfaltigkeit mit orientiertem Atlas $(\phi^{-1}\colon W_j \rightarrow U_j)_{j = 1, \dotsc, m}$. Eine Differenialform $\omega\colon \Omega \rightarrow\operatorname{Alt}^k \R^n$ heißt integrirbar, falls $\chi_{W_j}\omega$ für alle $j=1, \dotsc, m$ im vorherigen Sinne integrierbar ist. Ist $(\alpha_j)_{j=1, \dotsc, m}$ eine der Überdeckung $(W_j)_{j=1, \dotsc, m}$ untergeordnete Partition der Eins und $\alpha_j\circ\phi_j$ messbar für $j=1, \dotsc, m$, so definieren wir das Integral von $\omega$ über $M$ durch
+\begin{align*}
+\int_M \omega = \sum_{j=1}^m \int_M \alpha_j\omega
+\end{align*}
+wobei auf der rechten Seite die zuvor definierten Integrale stehen.
+
+\paragraph{Satz} (Stokes)\\
+Sei $\Omega\subset\R^n$ offen, $M\subset\Omega$ eine $k$-dimensionale $C^2$-Mannigfaltigkeit, $K\subset M$ eine kompakte Teilmenge mit glattem Rand und $\omega$ eine stetig differenzierbare Differentialform der Ordnung $k-1$ auf $\Omega$ mit $k\geq 2$. Der Rand $\partial K$ sei mit der von $K$ induzierten Ordnung ausgestattet. Dann gilt
+\begin{align*}
+\int_K \d\omega = \int_{\partial K} \omega
+\end{align*}
+
+\paragraph{Lemma} Für eine stetig differenzierbare Differentialform $\omega$ der Ordnung $k-1$ mit kompakten Träger auf $\R^k,\ k\geq 2$, ist 
+\begin{align*}
+\int_{\set{x_1\leq 0}} \d \omega = \int_{\partial \set{x_1 \geq 0}} \omega
+\end{align*}
+
+\paragraph{Satz} (Glatte Partition der Eins)\\
+Sei $K\subset \R^n$ kompakt und $(U_j)_{j=1, \dotsc, m}$ eine offene Überdeckung von $K$, also ${K\subset\bigcup_{j=1}^m U_j}$. Dann gibt es eine der Überdeckung $(U_J)_{j_1, \dotsc, m}$ untergeordnete Partitioon der Eins $(\alpha_j)_{j=1, \dotsc, m}$ mit $\alpha_j \in C^\infty(\R^n)$ und $\operatorname{supp} \alpha_j \subset U_j,\ j=1, \dotsc, m$.
+
+\subsection{Partielle Integration}
+
+\paragraph{Satz} (Satz von Stokes, klassisch)\\
+Sei $\Omega\subset\R^3$ offen, $M\subset \Omega$ eine orientierte zweidimensionale $C^2$-Mannigfaltigkeit, $K\subset M$ eine kompakte Teilmenge mit glattem Rand $\partial K$ und $g\in C^1(\Omega, \R^3)$ ein Vektorfeld. Dann definirt $\omega=g\cdot\d \overrightarrow{s}$ eine stetig differenzierbare Differentialform der Ordnung $1$ auf $\Omega$ und wir haben
+\begin{align*}
+\int_K \operatorname{rot} g \cdot \nu\ \d A^2 = \int_{\partial K} g \cdot \tau\ \d A^1
+\end{align*}
+wobei $\nu$ das äußere Normalenfeld auf $K$ bezeichnet und $\tau$ das positiv orientierte Tangentialfeld, das von der von $K$ induzierte Ordnung auf $\partial K$ bestimmt wird ist.
+
+\paragraph{Satz} (Satz von Gauß (Divergenzsatz))\\
+Für $\Omega \subset \R^n$ offen, eine Vektorfeld $h \in C^1(\Omega, \R^n)$, $K\subset \Omega$ kompakt und glattem Rand und äußerem Normalenfeld $\nu$ gilt
+\begin{align*}
+\int_K \operatorname{div} h\ \d\lambda^n = \int_{\partial K} h \cdot \nu\ \d A^{n-1}
+\end{align*}
+
+\paragraph{Corollar} (Partielle Integration)\\
+Für $\Omega \subset \R^n$ offen, $u, v \in C^1(\Omega),\ K\subset\Omega$ kompakt mit glattem Rand und äußerem Normalenfeld $\nu$ gilt
+\begin{align*}
+\int_K\frac{\partial u}{\partial x_j} v\ \d\lambda^n = \int_{\partial K} uv\nu_j\ \d A^{n-1} - \int_K u\frac{\partial v}{\partial x_j}\ \d\lambda^n
+\end{align*}
+Insbesondere ist $\int_K \frac{\partial u}{\partial x_j}\ \d\lambda^n = \int_{\partial K} u\nu_j\ \d A^{n-1}$.
+
+\paragraph{Corollar} (Greensche Formel)\\
+Für $\Omega \subset \R^n$ offen, $u, v \in C^2(\Omega),\ K\subset \Omega$ kompakt mit glattem Rand und äußerem Normalenfeld $\nu$ gilt:
+\begin{align*}
+\int_K  \Delta u\ \d\lambda^n &= \int_{\partial K} \frac{\partial u}{\partial \nu}\ \d A\\
+\int_K \nabla u \cdot v\ \d\lambda^n &= \int_{\partial K} u\frac{\partial v}{\partial \nu}\ \d A - \int_K u\nabla v\ \d\lambda^n\\
+\int_K(u\nabla v - v\nabla u)\ \d\lambda^n &= \int_{\partial K} \left(u\frac{\partial v}{\partial \nu} - v\frac{\partial u}{\partial \nu}\right)\ \d A
+\end{align*}
+
+\end{document}
